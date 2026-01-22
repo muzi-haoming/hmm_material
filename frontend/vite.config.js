@@ -12,9 +12,9 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@import "@/uni.scss";',
-        silenceDeprecations: ['legacy-js-api', 'import'],
-        api: 'modern-compiler'
+        additionalData: '@use "@/uni.scss" as *;',
+        api: 'modern-compiler',
+        silenceDeprecations: ['legacy-js-api', 'import', 'global-builtin']
       }
     }
   }

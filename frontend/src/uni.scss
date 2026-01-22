@@ -1,7 +1,7 @@
 /* uni.scss - 全局 SCSS 变量 */
 
-/* 引入 uview-plus 默认主题变量 */
-@import 'uview-plus/theme.scss';
+/* 引入 uview-plus 默认主题变量 (使用 @use 现代语法) */
+@use 'uview-plus/theme.scss' as *;
 
 /* 主题色 */
 $primary-color: #007AFF;

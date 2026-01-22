@@ -1,5 +1,8 @@
 /* uni.scss - 全局 SCSS 变量 */
 
+/* 引入 uview-plus 默认主题变量 */
+@import 'uview-plus/theme.scss';
+
 /* 主题色 */
 $primary-color: #007AFF;
 $success-color: #52c41a;
@@ -43,3 +46,13 @@ $u-success: $success-color;
 $u-warning: $warning-color;
 $u-error: $error-color;
 $u-info: $info-color;
+
+/* uView-plus 必需变量 */
+$u-border-color: $border-color;
+$u-bg-color: $bg-color;
+$u-text-color: $text-color;
+$u-tips-color: $text-color-placeholder;
+$u-light-color: #c0c4cc;
+$u-disabled-color: #c8c9cc;
+$u-font-size: $font-size-base;
+$u-content-color: $text-color-secondary;

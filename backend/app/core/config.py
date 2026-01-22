@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
 
     # 数据库配置
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5432/hmm_material"
+    DATABASE_URL: str = "postgresql+asyncpg://postgres:!q2w3e4R@127.0.0.1:5432/hmm_material"
 
     # AI 配置
     OPENAI_API_KEY: str = ""

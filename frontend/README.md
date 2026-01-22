@@ -20,21 +20,26 @@
 
 ```
 frontend/
-├── pages/              # 页面组件
-│   ├── login/          # 登录页
-│   ├── index/          # 首页
-│   ├── order/          # 订单管理
-│   ├── site/           # 工地管理
-│   ├── manufacturer/   # 厂家管理
-│   ├── contract/       # 合同管理
-│   ├── delegation/     # 委托管理
-│   └── user/           # 用户中心
-├── store/              # Pinia 状态管理
-├── api/                # API 调用
-├── utils/              # 工具函数
-├── static/             # 静态资源
-├── pages.json          # 路由配置
-├── manifest.json       # 应用配置
+├── src/                    # 源码目录
+│   ├── pages/              # 页面组件
+│   │   ├── login/          # 登录页
+│   │   ├── index/          # 首页
+│   │   ├── order/          # 订单管理
+│   │   ├── site/           # 工地管理
+│   │   ├── manufacturer/   # 厂家管理
+│   │   ├── contract/       # 合同管理
+│   │   ├── delegation/     # 委托管理
+│   │   └── user/           # 用户中心
+│   ├── store/              # Pinia 状态管理
+│   ├── api/                # API 调用
+│   ├── utils/              # 工具函数
+│   ├── static/             # 静态资源
+│   ├── App.vue             # 根组件
+│   ├── main.js             # 入口文件
+│   ├── pages.json          # 路由配置
+│   ├── manifest.json       # 应用配置
+│   └── uni.scss            # 全局样式
+├── vite.config.js          # Vite 配置
 ├── package.json
 └── README.md
 ```
@@ -94,7 +99,7 @@ npm run dev:h5
 
 ## API 配置
 
-编辑 `utils/request.js` 中的 `baseURL`：
+编辑 `src/utils/request.js` 中的 `baseURL`：
 
 ```javascript
 // 开发环境

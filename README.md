@@ -35,10 +35,14 @@ hmm_material/
 │   ├── requirements.txt
 │   └── .env.example
 ├── frontend/                # 前端 (Uni-app)
-│   ├── pages/              # 页面组件
-│   ├── store/              # 状态管理
-│   ├── api/                # API 调用
+│   ├── src/                # 源码目录
+│   │   ├── pages/          # 页面组件
+│   │   ├── store/          # 状态管理
+│   │   ├── api/            # API 调用
+│   │   └── utils/          # 工具函数
+│   ├── vite.config.js
 │   └── package.json
+├── scripts/                 # 启动脚本
 └── README.md
 ```
 

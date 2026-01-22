@@ -20,7 +20,7 @@ onHide(() => {
 </script>
 
 <style lang="scss">
-@use 'uview-plus/index.scss' as *;
+@import 'uview-plus/index.scss';
 
 /* 全局样式 */
 page {

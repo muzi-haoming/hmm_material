@@ -119,6 +119,80 @@ npm run dev:h5
 | `npm run dev:app` | 原生 App 开发模式 |
 | `npm run build:app` | 原生 App 生产构建 |
 
+## 启动脚本
+
+为了简化日常开发，可以使用以下启动脚本。
+
+### 后端启动脚本
+
+创建 `scripts/start-backend.sh`：
+
+```bash
+#!/bin/bash
+cd "$(dirname "$0")/../backend"
+
+# 检查虚拟环境是否存在，不存在则创建
+if [ ! -d "venv" ]; then
+    echo "创建虚拟环境..."
+    python -m venv venv
+fi
+
+# 激活虚拟环境
+source venv/bin/activate
+
+# 检查依赖是否已安装
+if ! pip show fastapi > /dev/null 2>&1; then
+    echo "安装依赖..."
+    pip install -r requirements.txt
+fi
+
+# 启动服务
+echo "启动后端服务..."
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### 前端启动脚本
+
+创建 `scripts/start-frontend.sh`：
+
+```bash
+#!/bin/bash
+cd "$(dirname "$0")/../frontend"
+
+# 检查 node_modules 是否存在
+if [ ! -d "node_modules" ]; then
+    echo "安装依赖..."
+    npm install
+fi
+
+# 启动服务
+echo "启动前端服务..."
+npm run dev:h5
+```
+
+### 使用方法
+
+```bash
+# 添加执行权限（首次）
+chmod +x scripts/*.sh
+
+# 启动后端（终端 1）
+./scripts/start-backend.sh
+
+# 启动前端（终端 2）
+./scripts/start-frontend.sh
+```
+
+### 关于虚拟环境
+
+| 操作 | 频率 | 说明 |
+|------|------|------|
+| 创建虚拟环境 | 一次 | 脚本会自动检查并创建 |
+| 安装依赖 | 一次 | 依赖变化时重新安装 |
+| 激活虚拟环境 | 每次启动 | 脚本会自动激活 |
+
+> 虚拟环境用于隔离项目依赖，避免不同项目之间的包版本冲突。启动脚本已包含自动检查逻辑，可安全重复运行。
+
 ## 环境变量配置
 
 编辑 `backend/.env` 文件：

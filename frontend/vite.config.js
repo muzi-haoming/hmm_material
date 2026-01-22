@@ -12,7 +12,6 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@use "@/uni.scss" as *;',
         api: 'modern-compiler',
         silenceDeprecations: ['legacy-js-api', 'import', 'global-builtin']
       }

@@ -20,6 +20,7 @@ onHide(() => {
 </script>
 
 <style lang="scss">
+@use '@/uni.scss' as *;
 @use 'uview-plus/index.scss' as *;
 
 /* 全局样式 */

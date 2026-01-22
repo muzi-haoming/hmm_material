@@ -1,58 +1,38 @@
 /* uni.scss - 全局 SCSS 变量 */
 
-/* 引入 uview-plus 默认主题变量 (使用 @use 现代语法) */
-@use 'uview-plus/theme.scss' as *;
+/* ========== 项目主题色 ========== */
+$primary-color: #007AFF !default;
+$success-color: #52c41a !default;
+$warning-color: #faad14 !default;
+$error-color: #f5222d !default;
+$info-color: #1890ff !default;
 
-/* 主题色 */
-$primary-color: #007AFF;
-$success-color: #52c41a;
-$warning-color: #faad14;
-$error-color: #f5222d;
-$info-color: #1890ff;
+/* ========== 文字颜色 ========== */
+$text-color: #333333 !default;
+$text-color-secondary: #666666 !default;
+$text-color-placeholder: #999999 !default;
 
-/* 文字颜色 */
-$text-color: #333333;
-$text-color-secondary: #666666;
-$text-color-placeholder: #999999;
+/* ========== 背景色 ========== */
+$bg-color: #f5f5f5 !default;
+$bg-color-white: #ffffff !default;
 
-/* 背景色 */
-$bg-color: #f5f5f5;
-$bg-color-white: #ffffff;
+/* ========== 边框颜色 ========== */
+$border-color: #e8e8e8 !default;
 
-/* 边框颜色 */
-$border-color: #e8e8e8;
+/* ========== 字体大小 ========== */
+$font-size-sm: 24rpx !default;
+$font-size-base: 28rpx !default;
+$font-size-lg: 32rpx !default;
+$font-size-xl: 36rpx !default;
 
-/* 字体大小 */
-$font-size-sm: 24rpx;
-$font-size-base: 28rpx;
-$font-size-lg: 32rpx;
-$font-size-xl: 36rpx;
+/* ========== 间距 ========== */
+$spacing-xs: 8rpx !default;
+$spacing-sm: 16rpx !default;
+$spacing-md: 24rpx !default;
+$spacing-lg: 32rpx !default;
+$spacing-xl: 48rpx !default;
 
-/* 间距 */
-$spacing-xs: 8rpx;
-$spacing-sm: 16rpx;
-$spacing-md: 24rpx;
-$spacing-lg: 32rpx;
-$spacing-xl: 48rpx;
-
-/* 圆角 */
-$border-radius-sm: 8rpx;
-$border-radius-base: 12rpx;
-$border-radius-lg: 16rpx;
-
-/* uView-plus 主题变量覆盖 */
-$u-primary: $primary-color;
-$u-success: $success-color;
-$u-warning: $warning-color;
-$u-error: $error-color;
-$u-info: $info-color;
-
-/* uView-plus 必需变量 */
-$u-border-color: $border-color;
-$u-bg-color: $bg-color;
-$u-text-color: $text-color;
-$u-tips-color: $text-color-placeholder;
-$u-light-color: #c0c4cc;
-$u-disabled-color: #c8c9cc;
-$u-font-size: $font-size-base;
-$u-content-color: $text-color-secondary;
+/* ========== 圆角 ========== */
+$border-radius-sm: 8rpx !default;
+$border-radius-base: 12rpx !default;
+$border-radius-lg: 16rpx !default;

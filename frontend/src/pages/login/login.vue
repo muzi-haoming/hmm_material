@@ -94,6 +94,13 @@ const goRegister = () => {
   min-height: 100vh;
   padding: 100rpx 60rpx;
   background: linear-gradient(180deg, #f0f7ff 0%, #ffffff 100%);
+
+  /* H5 大屏幕时限制宽度，居中显示 */
+  @media screen and (min-width: 768px) {
+    max-width: 450px;
+    margin: 0 auto;
+    padding-top: 150rpx;
+  }
 }
 
 .login-header {

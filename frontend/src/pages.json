@@ -13,6 +13,12 @@
       }
     },
     {
+      "path": "pages/login/register",
+      "style": {
+        "navigationBarTitleText": "注册"
+      }
+    },
+    {
       "path": "pages/site/list",
       "style": {
         "navigationBarTitleText": "工地管理"

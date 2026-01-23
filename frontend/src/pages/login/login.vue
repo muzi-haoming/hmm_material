@@ -83,7 +83,7 @@ const handleLogin = async () => {
 }
 
 const goRegister = () => {
-  uni.showToast({ title: '注册功能开发中', icon: 'none' })
+  uni.navigateTo({ url: '/pages/login/register' })
 }
 </script>
 

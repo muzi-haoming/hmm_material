@@ -16,11 +16,11 @@ if TYPE_CHECKING:
 
 class UserRole(str, Enum):
     """用户角色枚举"""
-    ADMIN = "admin"              # 系统管理员
-    SITE_MANAGER = "site_manager"  # 工地管理员
-    SITE_STAFF = "site_staff"    # 工地员工
-    AGENT = "agent"              # 厂家代理人
-    MANUFACTURER = "manufacturer"  # 厂家员工
+    ADMIN = "ADMIN"              # 系统管理员
+    SITE_MANAGER = "SITE_MANAGER"  # 工地管理员
+    SITE_STAFF = "SITE_STAFF"    # 工地员工
+    AGENT = "AGENT"              # 厂家代理人
+    MANUFACTURER = "MANUFACTURER"  # 厂家员工
 
 
 class User(Base, TimestampMixin):

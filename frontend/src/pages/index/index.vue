@@ -124,11 +124,11 @@ const loadData = async () => {
 
 const getRoleText = (role) => {
   const roleMap = {
-    admin: '系统管理员',
-    site_manager: '工地管理员',
-    site_staff: '工地员工',
-    agent: '厂家代理人',
-    manufacturer: '厂家员工'
+    ADMIN: '系统管理员',
+    SITE_MANAGER: '工地管理员',
+    SITE_STAFF: '工地员工',
+    AGENT: '厂家代理人',
+    MANUFACTURER: '厂家员工'
   }
   return roleMap[role] || '未知角色'
 }

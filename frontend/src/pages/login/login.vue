@@ -7,32 +7,30 @@
     </view>
 
     <view class="login-form">
-      <u-form :model="formData" ref="formRef">
-        <u-form-item prop="username">
-          <u-input
+      <view class="input-group">
+        <view class="input-wrapper">
+          <u-icon name="account-fill" color="#909399" size="22"></u-icon>
+          <input
+            class="input-field"
             v-model="formData.username"
             placeholder="请输入用户名"
-            prefixIcon="account-fill"
-            prefixIconStyle="color: #909399; font-size: 22px;"
-            border="surround"
-            shape="circle"
-            :customStyle="inputStyle"
+            placeholder-class="placeholder-style"
           />
-        </u-form-item>
+        </view>
+      </view>
 
-        <u-form-item prop="password">
-          <u-input
+      <view class="input-group">
+        <view class="input-wrapper">
+          <u-icon name="lock-fill" color="#909399" size="22"></u-icon>
+          <input
+            class="input-field"
             v-model="formData.password"
             type="password"
             placeholder="请输入密码"
-            prefixIcon="lock-fill"
-            prefixIconStyle="color: #909399; font-size: 22px;"
-            border="surround"
-            shape="circle"
-            :customStyle="inputStyle"
+            placeholder-class="placeholder-style"
           />
-        </u-form-item>
-      </u-form>
+        </view>
+      </view>
 
       <u-button
         type="primary"
@@ -62,12 +60,6 @@ const formData = reactive({
 })
 
 const loading = ref(false)
-
-const inputStyle = {
-  padding: '20rpx 24rpx',
-  backgroundColor: '#f5f5f5',
-  borderRadius: '12rpx'
-}
 
 const handleLogin = async () => {
   if (!formData.username || !formData.password) {
@@ -139,6 +131,33 @@ const goRegister = () => {
   border-radius: 24rpx;
   padding: 48rpx;
   box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.08);
+}
+
+.input-group {
+  margin-bottom: 32rpx;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  background-color: #f5f5f5;
+  border-radius: 44rpx;
+  border: 1px solid #e8e8e8;
+}
+
+.input-field {
+  flex: 1;
+  margin-left: 20rpx;
+  font-size: 28rpx;
+  color: #333;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.placeholder-style {
+  color: #c0c4cc;
 }
 
 .register-link {

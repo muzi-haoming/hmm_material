@@ -12,7 +12,10 @@
           <u-input
             v-model="formData.username"
             placeholder="请输入用户名"
-            prefixIcon="account"
+            prefixIcon="account-fill"
+            prefixIconStyle="color: #909399; font-size: 22px;"
+            border="surround"
+            shape="circle"
             :customStyle="inputStyle"
           />
         </u-form-item>
@@ -22,7 +25,10 @@
             v-model="formData.password"
             type="password"
             placeholder="请输入密码"
-            prefixIcon="lock"
+            prefixIcon="lock-fill"
+            prefixIconStyle="color: #909399; font-size: 22px;"
+            border="surround"
+            shape="circle"
             :customStyle="inputStyle"
           />
         </u-form-item>

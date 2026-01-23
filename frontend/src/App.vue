@@ -5,9 +5,13 @@ import { useUserStore } from '@/store/user'
 onLaunch(() => {
   console.log('App Launch')
 
-  // 检查登录状态
+  // 检查登录状态，未登录时跳转到登录页
   const userStore = useUserStore()
-  userStore.checkAuth()
+  if (!userStore.token) {
+    uni.reLaunch({ url: '/pages/login/login' })
+  } else {
+    userStore.checkAuth()
+  }
 })
 
 onShow(() => {

@@ -83,13 +83,15 @@
       </view>
 
       <view class="input-group">
-        <view class="picker-wrapper" @click="showRolePicker = true">
-          <u-icon name="integral-fill" color="#909399" size="22"></u-icon>
-          <text class="picker-text" :class="{ placeholder: !formData.role }">
-            {{ formData.role ? getRoleText(formData.role) : '请选择角色' }}
-          </text>
-          <u-icon name="arrow-down" color="#909399" size="18"></u-icon>
-        </view>
+        <picker mode="selector" :range="roleOptions" range-key="label" @change="onRoleChange">
+          <view class="picker-wrapper">
+            <u-icon name="integral-fill" color="#909399" size="22"></u-icon>
+            <text class="picker-text" :class="{ placeholder: !formData.role }">
+              {{ formData.role ? getRoleText(formData.role) : '请选择角色' }}
+            </text>
+            <u-icon name="arrow-down" color="#909399" size="18"></u-icon>
+          </view>
+        </picker>
       </view>
 
       <u-button
@@ -105,15 +107,6 @@
         已有账号？立即登录
       </view>
     </view>
-
-    <!-- 角色选择器 -->
-    <u-picker
-      :show="showRolePicker"
-      :columns="roleColumns"
-      @confirm="onRoleConfirm"
-      @cancel="showRolePicker = false"
-      keyName="label"
-    ></u-picker>
   </view>
 </template>
 
@@ -132,15 +125,12 @@ const formData = reactive({
 })
 
 const loading = ref(false)
-const showRolePicker = ref(false)
 
-const roleColumns = [
-  [
-    { label: '工地员工', value: 'SITE_STAFF' },
-    { label: '工地管理员', value: 'SITE_MANAGER' },
-    { label: '厂家代理人', value: 'AGENT' },
-    { label: '厂家员工', value: 'MANUFACTURER' }
-  ]
+const roleOptions = [
+  { label: '工地员工', value: 'SITE_STAFF' },
+  { label: '工地管理员', value: 'SITE_MANAGER' },
+  { label: '厂家代理人', value: 'AGENT' },
+  { label: '厂家员工', value: 'MANUFACTURER' }
 ]
 
 const getRoleText = (role) => {
@@ -154,9 +144,9 @@ const getRoleText = (role) => {
   return roleMap[role] || '未知角色'
 }
 
-const onRoleConfirm = (e) => {
-  formData.role = e.value[0].value
-  showRolePicker.value = false
+const onRoleChange = (e) => {
+  const index = e.detail.value
+  formData.role = roleOptions[index].value
 }
 
 const handleRegister = async () => {

@@ -1,6 +1,7 @@
 """
 工地管理 API
 """
+import uuid
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -30,7 +31,7 @@ async def create_site(
             detail="工地编号已存在"
         )
 
-    site = Site(**site_in.model_dump())
+    site = Site(id=str(uuid.uuid4()), **site_in.model_dump())
     db.add(site)
     await db.commit()
     await db.refresh(site)
@@ -79,7 +80,7 @@ async def list_sites(
 
 @router.get("/{site_id}", response_model=SiteResponse)
 async def get_site(
-    site_id: int,
+    site_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -98,7 +99,7 @@ async def get_site(
 
 @router.put("/{site_id}", response_model=SiteResponse)
 async def update_site(
-    site_id: int,
+    site_id: str,
     site_in: SiteUpdate,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
@@ -125,7 +126,7 @@ async def update_site(
 
 @router.delete("/{site_id}")
 async def delete_site(
-    site_id: int,
+    site_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):

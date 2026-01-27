@@ -2,7 +2,7 @@
 厂家相关模型
 """
 from typing import TYPE_CHECKING
-from sqlalchemy import String, Integer, ForeignKey
+from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -17,7 +17,7 @@ class ManufacturerGroup(Base, TimestampMixin):
     """厂家组模型"""
     __tablename__ = "manufacturer_group"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
     code: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(String(200), nullable=False)
 
@@ -35,7 +35,7 @@ class Manufacturer(Base, TimestampMixin):
     """厂家模型"""
     __tablename__ = "manufacturer"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
     code: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(String(200), nullable=False)
 
@@ -59,12 +59,12 @@ class ManufacturerGroupDetail(Base):
     """厂家组详情模型（厂家组-厂家关联）"""
     __tablename__ = "manufacturer_group_detail"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    manufacturer_group_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("manufacturer_group.id"), nullable=False
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    manufacturer_group_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("manufacturer_group.id"), nullable=False
     )
-    manufacturer_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("manufacturer.id"), nullable=False
+    manufacturer_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("manufacturer.id"), nullable=False
     )
 
     # 关系

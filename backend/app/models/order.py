@@ -3,7 +3,7 @@
 """
 from typing import TYPE_CHECKING
 from decimal import Decimal
-from sqlalchemy import String, Integer, ForeignKey, Numeric, CHAR
+from sqlalchemy import String, ForeignKey, Numeric, CHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -21,10 +21,10 @@ class Order(Base, TimestampMixin):
     """订单模型"""
     __tablename__ = "order"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
     code: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
-    contract_id: Mapped[int] = mapped_column(Integer, ForeignKey("contract.id"), nullable=False)
-    product_id: Mapped[int] = mapped_column(Integer, ForeignKey("product.id"), nullable=False)
+    contract_id: Mapped[str] = mapped_column(String(36), ForeignKey("contract.id"), nullable=False)
+    product_id: Mapped[str] = mapped_column(String(36), ForeignKey("product.id"), nullable=False)
     quantity: Mapped[Decimal] = mapped_column(Numeric(19, 4), nullable=False)
     status: Mapped[str] = mapped_column(CHAR(1), nullable=False)  # 状态：1-待处理 2-处理中 3-完成 4-取消
 

@@ -75,7 +75,7 @@ async def list_users(
 
 @router.get("/{user_id}", response_model=UserResponse)
 async def get_user(
-    user_id: int,
+    user_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_superuser)
 ):
@@ -94,7 +94,7 @@ async def get_user(
 
 @router.put("/{user_id}", response_model=UserResponse)
 async def update_user(
-    user_id: int,
+    user_id: str,
     user_in: UserUpdate,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_superuser)
@@ -121,7 +121,7 @@ async def update_user(
 
 @router.delete("/{user_id}")
 async def delete_user(
-    user_id: int,
+    user_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_superuser)
 ):

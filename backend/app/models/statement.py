@@ -4,7 +4,7 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 from decimal import Decimal
-from sqlalchemy import String, Integer, ForeignKey, DateTime, Numeric
+from sqlalchemy import String, ForeignKey, DateTime, Numeric
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -19,9 +19,9 @@ class Statement(Base, TimestampMixin):
     """结算单模型"""
     __tablename__ = "statement"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
     code: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
-    contract_id: Mapped[int] = mapped_column(Integer, ForeignKey("contract.id"), nullable=False)
+    contract_id: Mapped[str] = mapped_column(String(36), ForeignKey("contract.id"), nullable=False)
     start_time: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     end_time: Mapped[datetime] = mapped_column(DateTime, nullable=False)
 
@@ -42,9 +42,9 @@ class StatementMaterialDetail(Base, TimestampMixin):
     """结算单物资明细模型"""
     __tablename__ = "statement_material_detail"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    statement_id: Mapped[int] = mapped_column(Integer, ForeignKey("statement.id"), nullable=False)
-    product_id: Mapped[int] = mapped_column(Integer, ForeignKey("product.id"), nullable=False)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    statement_id: Mapped[str] = mapped_column(String(36), ForeignKey("statement.id"), nullable=False)
+    product_id: Mapped[str] = mapped_column(String(36), ForeignKey("product.id"), nullable=False)
     quantity: Mapped[Decimal] = mapped_column(Numeric(19, 4), nullable=False)
     amount: Mapped[Decimal] = mapped_column(Numeric(19, 4), nullable=False)
 
@@ -60,7 +60,7 @@ class StatementOtherExpensesItem(Base, TimestampMixin):
     """结算单其他费用项模型"""
     __tablename__ = "statement_other_expenses_item"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
     code: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(String(200), nullable=False)
 
@@ -77,9 +77,9 @@ class StatementOtherExpensesDetail(Base, TimestampMixin):
     """结算单其他费用明细模型"""
     __tablename__ = "statement_other_expenses_detail"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    statement_id: Mapped[int] = mapped_column(Integer, ForeignKey("statement.id"), nullable=False)
-    item_id: Mapped[int] = mapped_column(Integer, ForeignKey("statement_other_expenses_item.id"), nullable=False)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    statement_id: Mapped[str] = mapped_column(String(36), ForeignKey("statement.id"), nullable=False)
+    item_id: Mapped[str] = mapped_column(String(36), ForeignKey("statement_other_expenses_item.id"), nullable=False)
     amount: Mapped[Decimal] = mapped_column(Numeric(19, 4), nullable=False)
 
     # 关系

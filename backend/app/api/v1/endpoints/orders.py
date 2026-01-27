@@ -1,6 +1,7 @@
 """
 订单管理 API
 """
+import uuid
 from typing import Optional
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status, Query
@@ -39,7 +40,7 @@ async def create_order(
             detail="订单编号已存在"
         )
 
-    order = Order(**order_in.model_dump())
+    order = Order(id=str(uuid.uuid4()), **order_in.model_dump())
     db.add(order)
     await db.commit()
     await db.refresh(order)
@@ -53,8 +54,8 @@ async def list_orders(
     page_size: int = Query(20, ge=1, le=100),
     keyword: Optional[str] = Query(None, description="搜索关键词"),
     order_status: Optional[str] = Query(None, description="订单状态"),
-    contract_id: Optional[int] = Query(None, description="合同ID"),
-    product_id: Optional[int] = Query(None, description="产品ID"),
+    contract_id: Optional[str] = Query(None, description="合同ID"),
+    product_id: Optional[str] = Query(None, description="产品ID"),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -93,7 +94,7 @@ async def list_orders(
 
 @router.get("/{order_id}", response_model=OrderResponse)
 async def get_order(
-    order_id: int,
+    order_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -114,7 +115,7 @@ async def get_order(
 
 @router.put("/{order_id}", response_model=OrderResponse)
 async def update_order(
-    order_id: int,
+    order_id: str,
     order_in: OrderUpdate,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
@@ -143,7 +144,7 @@ async def update_order(
 
 @router.delete("/{order_id}")
 async def delete_order(
-    order_id: int,
+    order_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -169,7 +170,7 @@ async def delete_order(
 
 @router.post("/{order_id}/process")
 async def process_order(
-    order_id: int,
+    order_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -199,7 +200,7 @@ async def process_order(
 
 @router.post("/{order_id}/complete")
 async def complete_order(
-    order_id: int,
+    order_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -229,7 +230,7 @@ async def complete_order(
 
 @router.post("/{order_id}/cancel")
 async def cancel_order(
-    order_id: int,
+    order_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):

@@ -25,7 +25,7 @@ class SiteUpdate(BaseModel):
 
 class SiteResponse(SiteBase):
     """工地响应 Schema"""
-    id: int
+    id: str
     create_time: datetime
     update_time: datetime
 

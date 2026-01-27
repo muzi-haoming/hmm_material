@@ -10,9 +10,9 @@ class ContractBase(BaseModel):
     """合同基础 Schema"""
     code: str = Field(..., max_length=100)
     name: str = Field(..., max_length=200)
-    site_id: int
-    manufacturer_group_id: int
-    agent_id: int
+    site_id: str
+    manufacturer_group_id: str
+    agent_id: str
     status: str = Field(..., max_length=1)  # 状态：1-草稿 2-生效 3-完成 4-取消
 
 
@@ -25,15 +25,15 @@ class ContractUpdate(BaseModel):
     """合同更新 Schema"""
     code: Optional[str] = Field(None, max_length=100)
     name: Optional[str] = Field(None, max_length=200)
-    site_id: Optional[int] = None
-    manufacturer_group_id: Optional[int] = None
-    agent_id: Optional[int] = None
+    site_id: Optional[str] = None
+    manufacturer_group_id: Optional[str] = None
+    agent_id: Optional[str] = None
     status: Optional[str] = Field(None, max_length=1)
 
 
 class ContractResponse(ContractBase):
     """合同响应 Schema"""
-    id: int
+    id: str
     create_time: datetime
     update_time: datetime
 

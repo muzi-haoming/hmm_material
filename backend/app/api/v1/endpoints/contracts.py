@@ -1,6 +1,7 @@
 """
 合同管理 API
 """
+import uuid
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -32,7 +33,7 @@ async def create_contract(
             detail="合同编号已存在"
         )
 
-    contract = Contract(**contract_in.model_dump())
+    contract = Contract(id=str(uuid.uuid4()), **contract_in.model_dump())
     db.add(contract)
     await db.commit()
     await db.refresh(contract)
@@ -46,7 +47,7 @@ async def list_contracts(
     page_size: int = Query(20, ge=1, le=100),
     keyword: Optional[str] = Query(None, description="搜索关键词"),
     contract_status: Optional[str] = Query(None, description="合同状态"),
-    site_id: Optional[int] = Query(None, description="工地ID"),
+    site_id: Optional[str] = Query(None, description="工地ID"),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -86,7 +87,7 @@ async def list_contracts(
 
 @router.get("/{contract_id}", response_model=ContractResponse)
 async def get_contract(
-    contract_id: int,
+    contract_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -107,7 +108,7 @@ async def get_contract(
 
 @router.put("/{contract_id}", response_model=ContractResponse)
 async def update_contract(
-    contract_id: int,
+    contract_id: str,
     contract_in: ContractUpdate,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
@@ -136,7 +137,7 @@ async def update_contract(
 
 @router.delete("/{contract_id}")
 async def delete_contract(
-    contract_id: int,
+    contract_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):

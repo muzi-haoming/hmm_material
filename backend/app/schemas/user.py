@@ -14,7 +14,7 @@ class UserRoleBase(BaseModel):
 
 class UserRoleResponse(UserRoleBase):
     """用户角色响应 Schema"""
-    id: int
+    id: str
 
     class Config:
         from_attributes = True
@@ -24,7 +24,7 @@ class UserBase(BaseModel):
     """用户基础 Schema"""
     name: str = Field(..., max_length=200)
     username: str = Field(..., min_length=3, max_length=50)
-    role_id: int
+    role_id: str
 
 
 class UserCreate(UserBase):
@@ -35,12 +35,12 @@ class UserCreate(UserBase):
 class UserUpdate(BaseModel):
     """用户更新 Schema"""
     name: Optional[str] = Field(None, max_length=200)
-    role_id: Optional[int] = None
+    role_id: Optional[str] = None
 
 
 class UserResponse(UserBase):
     """用户响应 Schema"""
-    id: int
+    id: str
     create_time: datetime
     update_time: datetime
     role: Optional[UserRoleResponse] = None

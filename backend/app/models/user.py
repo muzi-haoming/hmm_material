@@ -2,7 +2,7 @@
 用户相关模型
 """
 from typing import TYPE_CHECKING
-from sqlalchemy import String, Integer, ForeignKey
+from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -16,7 +16,7 @@ class UserRole(Base):
     """用户角色模型"""
     __tablename__ = "user_role"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
     code: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(String(200), nullable=False)
 
@@ -31,11 +31,11 @@ class User(Base, TimestampMixin):
     """用户模型"""
     __tablename__ = "user"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
     name: Mapped[str] = mapped_column(String(200), nullable=False)
     username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(32), nullable=False)  # MD5 32位
-    role_id: Mapped[int] = mapped_column(Integer, ForeignKey("user_role.id"), nullable=False)
+    role_id: Mapped[str] = mapped_column(String(36), ForeignKey("user_role.id"), nullable=False)
 
     # 关系
     role: Mapped["UserRole"] = relationship("UserRole", back_populates="users")

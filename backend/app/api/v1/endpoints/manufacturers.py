@@ -1,6 +1,7 @@
 """
 厂家管理 API
 """
+import uuid
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -38,7 +39,7 @@ async def create_manufacturer(
             detail="厂家编号已存在"
         )
 
-    manufacturer = Manufacturer(**manufacturer_in.model_dump())
+    manufacturer = Manufacturer(id=str(uuid.uuid4()), **manufacturer_in.model_dump())
     db.add(manufacturer)
     await db.commit()
     await db.refresh(manufacturer)
@@ -86,7 +87,7 @@ async def list_manufacturers(
 
 @router.get("/{manufacturer_id}", response_model=ManufacturerResponse)
 async def get_manufacturer(
-    manufacturer_id: int,
+    manufacturer_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -107,7 +108,7 @@ async def get_manufacturer(
 
 @router.put("/{manufacturer_id}", response_model=ManufacturerResponse)
 async def update_manufacturer(
-    manufacturer_id: int,
+    manufacturer_id: str,
     manufacturer_in: ManufacturerUpdate,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
@@ -136,7 +137,7 @@ async def update_manufacturer(
 
 @router.delete("/{manufacturer_id}")
 async def delete_manufacturer(
-    manufacturer_id: int,
+    manufacturer_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -180,13 +181,14 @@ async def create_manufacturer_group(
     manufacturer_ids = group_in.manufacturer_ids or []
     group_data = group_in.model_dump(exclude={"manufacturer_ids"})
 
-    group = ManufacturerGroup(**group_data)
+    group = ManufacturerGroup(id=str(uuid.uuid4()), **group_data)
     db.add(group)
     await db.flush()
 
     # 添加厂家关联
     for manufacturer_id in manufacturer_ids:
         detail = ManufacturerGroupDetail(
+            id=str(uuid.uuid4()),
             manufacturer_group_id=group.id,
             manufacturer_id=manufacturer_id
         )
@@ -243,7 +245,7 @@ async def list_manufacturer_groups(
 
 @router.get("/groups/{group_id}", response_model=ManufacturerGroupResponse)
 async def get_manufacturer_group(
-    group_id: int,
+    group_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -266,7 +268,7 @@ async def get_manufacturer_group(
 
 @router.put("/groups/{group_id}", response_model=ManufacturerGroupResponse)
 async def update_manufacturer_group(
-    group_id: int,
+    group_id: str,
     group_in: ManufacturerGroupUpdate,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
@@ -302,7 +304,7 @@ async def update_manufacturer_group(
 
 @router.delete("/groups/{group_id}")
 async def delete_manufacturer_group(
-    group_id: int,
+    group_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):

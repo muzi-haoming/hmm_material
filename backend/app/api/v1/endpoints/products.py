@@ -1,6 +1,7 @@
 """
 产品管理 API
 """
+import uuid
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -32,7 +33,7 @@ async def create_product(
             detail="产品编号已存在"
         )
 
-    product = Product(**product_in.model_dump())
+    product = Product(id=str(uuid.uuid4()), **product_in.model_dump())
     db.add(product)
     await db.commit()
     await db.refresh(product)
@@ -80,7 +81,7 @@ async def list_products(
 
 @router.get("/{product_id}", response_model=ProductResponse)
 async def get_product(
-    product_id: int,
+    product_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -101,7 +102,7 @@ async def get_product(
 
 @router.put("/{product_id}", response_model=ProductResponse)
 async def update_product(
-    product_id: int,
+    product_id: str,
     product_in: ProductUpdate,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
@@ -130,7 +131,7 @@ async def update_product(
 
 @router.delete("/{product_id}")
 async def delete_product(
-    product_id: int,
+    product_id: str,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):

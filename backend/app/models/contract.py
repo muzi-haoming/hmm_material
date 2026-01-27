@@ -2,7 +2,7 @@
 合同模型
 """
 from typing import TYPE_CHECKING
-from sqlalchemy import String, Integer, ForeignKey, CHAR
+from sqlalchemy import String, ForeignKey, CHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -20,14 +20,14 @@ class Contract(Base, TimestampMixin):
     """合同模型"""
     __tablename__ = "contract"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
     code: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(String(200), nullable=False)
-    site_id: Mapped[int] = mapped_column(Integer, ForeignKey("site.id"), nullable=False)
-    manufacturer_group_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("manufacturer_group.id"), nullable=False
+    site_id: Mapped[str] = mapped_column(String(36), ForeignKey("site.id"), nullable=False)
+    manufacturer_group_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("manufacturer_group.id"), nullable=False
     )
-    agent_id: Mapped[int] = mapped_column(Integer, ForeignKey("user.id"), nullable=False)
+    agent_id: Mapped[str] = mapped_column(String(36), ForeignKey("user.id"), nullable=False)
     status: Mapped[str] = mapped_column(CHAR(1), nullable=False)  # 状态：1-草稿 2-生效 3-完成 4-取消
 
     # 关系

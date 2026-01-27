@@ -30,7 +30,7 @@ class ProductUpdate(BaseModel):
 
 class ProductResponse(ProductBase):
     """产品响应 Schema"""
-    id: int
+    id: str
     create_time: datetime
     update_time: datetime
 

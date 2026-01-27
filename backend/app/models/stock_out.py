@@ -3,7 +3,7 @@
 """
 from typing import TYPE_CHECKING
 from decimal import Decimal
-from sqlalchemy import String, Integer, ForeignKey, Numeric
+from sqlalchemy import String, ForeignKey, Numeric
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -19,11 +19,11 @@ class StockOut(Base, TimestampMixin):
     """出库模型"""
     __tablename__ = "stock_out"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
     code: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
-    order_id: Mapped[int] = mapped_column(Integer, ForeignKey("order.id"), nullable=False)
-    manufacturer_id: Mapped[int] = mapped_column(Integer, ForeignKey("manufacturer.id"), nullable=False)
-    product_id: Mapped[int] = mapped_column(Integer, ForeignKey("product.id"), nullable=False)
+    order_id: Mapped[str] = mapped_column(String(36), ForeignKey("order.id"), nullable=False)
+    manufacturer_id: Mapped[str] = mapped_column(String(36), ForeignKey("manufacturer.id"), nullable=False)
+    product_id: Mapped[str] = mapped_column(String(36), ForeignKey("product.id"), nullable=False)
     quantity: Mapped[Decimal] = mapped_column(Numeric(19, 4), nullable=False)
 
     # 关系

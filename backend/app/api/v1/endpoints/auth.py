@@ -1,6 +1,7 @@
 """
 认证相关 API
 """
+import uuid
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -62,6 +63,7 @@ async def register(
 
     # 创建用户
     user = User(
+        id=str(uuid.uuid4()),
         name=user_in.name,
         username=user_in.username,
         password=get_password_hash(user_in.password),

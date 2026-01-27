@@ -25,7 +25,7 @@ class ManufacturerUpdate(BaseModel):
 
 class ManufacturerResponse(ManufacturerBase):
     """厂家响应 Schema"""
-    id: int
+    id: str
     create_time: datetime
     update_time: datetime
 
@@ -41,7 +41,7 @@ class ManufacturerGroupBase(BaseModel):
 
 class ManufacturerGroupCreate(ManufacturerGroupBase):
     """厂家组创建 Schema"""
-    manufacturer_ids: Optional[List[int]] = None
+    manufacturer_ids: Optional[List[str]] = None
 
 
 class ManufacturerGroupUpdate(BaseModel):
@@ -52,7 +52,7 @@ class ManufacturerGroupUpdate(BaseModel):
 
 class ManufacturerGroupResponse(ManufacturerGroupBase):
     """厂家组响应 Schema"""
-    id: int
+    id: str
     create_time: datetime
     update_time: datetime
     manufacturers: List[ManufacturerResponse] = []

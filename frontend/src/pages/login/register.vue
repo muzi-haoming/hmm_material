@@ -57,7 +57,7 @@
       </view>
 
       <view class="input-group">
-        <picker mode="selector" :range="roleOptions" range-key="label" @change="onRoleChange">
+        <picker mode="selector" :range="roleOptions" range-key="label" @change="onRoleChange" :disabled="roleOptions.length === 0">
           <view class="picker-wrapper">
             <u-icon name="integral-fill" color="#909399" size="22"></u-icon>
             <text class="picker-text" :class="{ placeholder: !formData.role_id }">
@@ -85,8 +85,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
-import { register } from '@/api'
+import { ref, reactive, computed, onMounted } from 'vue'
+import { register, getRoles } from '@/api'
 
 const formData = reactive({
   username: '',
@@ -97,20 +97,37 @@ const formData = reactive({
 })
 
 const loading = ref(false)
+const roleOptions = ref([])
 
-// 角色选项 - 对应 user_role 表中的数据
-const roleOptions = [
-  { label: '用户', value: 2 }  // role_id = 2 是普通用户
-]
+// 获取角色列表
+const fetchRoles = async () => {
+  try {
+    const roles = await getRoles()
+    roleOptions.value = roles.map(role => ({
+      label: role.name,
+      value: role.id
+    }))
+    // 如果只有一个角色，自动选中
+    if (roleOptions.value.length === 1) {
+      formData.role_id = roleOptions.value[0].value
+    }
+  } catch (error) {
+    console.error('获取角色列表失败:', error)
+  }
+}
+
+onMounted(() => {
+  fetchRoles()
+})
 
 const selectedRoleLabel = computed(() => {
-  const option = roleOptions.find(opt => opt.value === formData.role_id)
+  const option = roleOptions.value.find(opt => opt.value === formData.role_id)
   return option ? option.label : ''
 })
 
 const onRoleChange = (e) => {
   const index = e.detail.value
-  formData.role_id = roleOptions[index].value
+  formData.role_id = roleOptions.value[index].value
 }
 
 const handleRegister = async () => {

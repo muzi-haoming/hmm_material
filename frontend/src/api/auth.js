@@ -1,7 +1,7 @@
 /**
  * 认证相关 API
  */
-import { post } from '@/utils/request'
+import { get, post } from '@/utils/request'
 
 /**
  * 用户登录
@@ -37,4 +37,11 @@ export const login = (username, password) => {
  */
 export const register = (userData) => {
   return post('/auth/register', userData)
+}
+
+/**
+ * 获取可用角色列表
+ */
+export const getRoles = () => {
+  return get('/auth/roles')
 }

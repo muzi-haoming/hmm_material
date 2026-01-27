@@ -8,12 +8,25 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
+from typing import List
 from app.api.deps import get_db
 from app.core.security import verify_password, create_access_token, get_password_hash
-from app.models.user import User
-from app.schemas.user import UserCreate, UserResponse, Token
+from app.models.user import User, UserRole
+from app.schemas.user import UserCreate, UserResponse, Token, UserRoleResponse
 
 router = APIRouter()
+
+
+@router.get("/roles", response_model=List[UserRoleResponse])
+async def get_roles(
+    db: AsyncSession = Depends(get_db)
+):
+    """获取可用角色列表（用于注册）"""
+    result = await db.execute(
+        select(UserRole).where(UserRole.code != 'admin')  # 排除管理员角色
+    )
+    roles = result.scalars().all()
+    return roles
 
 
 @router.post("/login", response_model=Token)

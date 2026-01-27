@@ -43,8 +43,6 @@ async def list_sites(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
     keyword: Optional[str] = Query(None, description="搜索关键词"),
-    province: Optional[str] = Query(None, description="省份筛选"),
-    city: Optional[str] = Query(None, description="城市筛选"),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -57,10 +55,6 @@ async def list_sites(
             Site.name.ilike(f"%{keyword}%") |
             Site.code.ilike(f"%{keyword}%")
         )
-    if province:
-        query = query.where(Site.province == province)
-    if city:
-        query = query.where(Site.city == city)
 
     # 查询总数
     count_query = select(func.count()).select_from(query.subquery())

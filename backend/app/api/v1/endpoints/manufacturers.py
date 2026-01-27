@@ -9,10 +9,10 @@ from sqlalchemy.orm import selectinload
 
 from app.api.deps import get_db, get_current_active_user
 from app.models.user import User
-from app.models.manufacturer import Manufacturer, ManufacturerGroup, ManufacturerType
+from app.models.manufacturer import Manufacturer, ManufacturerGroup, ManufacturerGroupDetail
 from app.schemas.manufacturer import (
     ManufacturerCreate, ManufacturerUpdate, ManufacturerResponse,
-    ManufacturerGroupCreate, ManufacturerGroupResponse
+    ManufacturerGroupCreate, ManufacturerGroupUpdate, ManufacturerGroupResponse
 )
 from app.schemas.common import PaginatedResponse
 
@@ -38,22 +38,8 @@ async def create_manufacturer(
             detail="厂家编号已存在"
         )
 
-    # 提取 group_ids
-    group_ids = manufacturer_in.group_ids
-    manufacturer_data = manufacturer_in.model_dump(exclude={"group_ids"})
-
-    manufacturer = Manufacturer(**manufacturer_data)
+    manufacturer = Manufacturer(**manufacturer_in.model_dump())
     db.add(manufacturer)
-    await db.flush()
-
-    # 关联厂家组
-    if group_ids:
-        result = await db.execute(
-            select(ManufacturerGroup).where(ManufacturerGroup.id.in_(group_ids))
-        )
-        groups = result.scalars().all()
-        manufacturer.groups = list(groups)
-
     await db.commit()
     await db.refresh(manufacturer)
 
@@ -65,8 +51,6 @@ async def list_manufacturers(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
     keyword: Optional[str] = Query(None, description="搜索关键词"),
-    type: Optional[ManufacturerType] = Query(None, description="厂家类型"),
-    province: Optional[str] = Query(None, description="省份"),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -78,10 +62,6 @@ async def list_manufacturers(
             Manufacturer.name.ilike(f"%{keyword}%") |
             Manufacturer.code.ilike(f"%{keyword}%")
         )
-    if type:
-        query = query.where(Manufacturer.type == type)
-    if province:
-        query = query.where(Manufacturer.province == province)
 
     # 查询总数
     count_query = select(func.count()).select_from(query.subquery())
@@ -187,24 +167,43 @@ async def create_manufacturer_group(
     current_user: User = Depends(get_current_active_user)
 ):
     """创建厂家组"""
-    member_ids = group_in.member_ids
-    group_data = group_in.model_dump(exclude={"member_ids"})
+    # 检查编号是否已存在
+    result = await db.execute(
+        select(ManufacturerGroup).where(ManufacturerGroup.code == group_in.code)
+    )
+    if result.scalar_one_or_none():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="厂家组编号已存在"
+        )
+
+    manufacturer_ids = group_in.manufacturer_ids or []
+    group_data = group_in.model_dump(exclude={"manufacturer_ids"})
 
     group = ManufacturerGroup(**group_data)
     db.add(group)
     await db.flush()
 
-    if member_ids:
-        result = await db.execute(
-            select(Manufacturer).where(Manufacturer.id.in_(member_ids))
+    # 添加厂家关联
+    for manufacturer_id in manufacturer_ids:
+        detail = ManufacturerGroupDetail(
+            manufacturer_group_id=group.id,
+            manufacturer_id=manufacturer_id
         )
-        members = result.scalars().all()
-        group.members = list(members)
+        db.add(detail)
 
     await db.commit()
-    await db.refresh(group)
 
-    return group
+    # 重新加载以获取关联数据
+    result = await db.execute(
+        select(ManufacturerGroup)
+        .options(selectinload(ManufacturerGroup.details).selectinload(ManufacturerGroupDetail.manufacturer))
+        .where(ManufacturerGroup.id == group.id)
+    )
+    group = result.scalar_one()
+
+    # 构建响应
+    return _build_group_response(group)
 
 
 @router.get("/groups", response_model=PaginatedResponse[ManufacturerGroupResponse])
@@ -223,15 +222,18 @@ async def list_manufacturer_groups(
     offset = (page - 1) * page_size
     result = await db.execute(
         select(ManufacturerGroup)
-        .options(selectinload(ManufacturerGroup.members))
+        .options(selectinload(ManufacturerGroup.details).selectinload(ManufacturerGroupDetail.manufacturer))
         .offset(offset)
         .limit(page_size)
         .order_by(ManufacturerGroup.id.desc())
     )
     groups = result.scalars().all()
 
+    # 构建响应
+    items = [_build_group_response(g) for g in groups]
+
     return PaginatedResponse(
-        items=groups,
+        items=items,
         total=total,
         page=page,
         page_size=page_size,
@@ -248,7 +250,7 @@ async def get_manufacturer_group(
     """获取厂家组详情"""
     result = await db.execute(
         select(ManufacturerGroup)
-        .options(selectinload(ManufacturerGroup.members))
+        .options(selectinload(ManufacturerGroup.details).selectinload(ManufacturerGroupDetail.manufacturer))
         .where(ManufacturerGroup.id == group_id)
     )
     group = result.scalar_one_or_none()
@@ -259,4 +261,88 @@ async def get_manufacturer_group(
             detail="厂家组不存在"
         )
 
-    return group
+    return _build_group_response(group)
+
+
+@router.put("/groups/{group_id}", response_model=ManufacturerGroupResponse)
+async def update_manufacturer_group(
+    group_id: int,
+    group_in: ManufacturerGroupUpdate,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user)
+):
+    """更新厂家组"""
+    result = await db.execute(
+        select(ManufacturerGroup).where(ManufacturerGroup.id == group_id)
+    )
+    group = result.scalar_one_or_none()
+
+    if not group:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="厂家组不存在"
+        )
+
+    update_data = group_in.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(group, field, value)
+
+    await db.commit()
+
+    # 重新加载
+    result = await db.execute(
+        select(ManufacturerGroup)
+        .options(selectinload(ManufacturerGroup.details).selectinload(ManufacturerGroupDetail.manufacturer))
+        .where(ManufacturerGroup.id == group_id)
+    )
+    group = result.scalar_one()
+
+    return _build_group_response(group)
+
+
+@router.delete("/groups/{group_id}")
+async def delete_manufacturer_group(
+    group_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user)
+):
+    """删除厂家组"""
+    result = await db.execute(
+        select(ManufacturerGroup).where(ManufacturerGroup.id == group_id)
+    )
+    group = result.scalar_one_or_none()
+
+    if not group:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="厂家组不存在"
+        )
+
+    # 删除关联详情
+    await db.execute(
+        ManufacturerGroupDetail.__table__.delete().where(
+            ManufacturerGroupDetail.manufacturer_group_id == group_id
+        )
+    )
+
+    await db.delete(group)
+    await db.commit()
+
+    return {"message": "厂家组已删除"}
+
+
+def _build_group_response(group: ManufacturerGroup) -> dict:
+    """构建厂家组响应"""
+    manufacturers = [
+        ManufacturerResponse.model_validate(detail.manufacturer)
+        for detail in group.details
+        if detail.manufacturer
+    ]
+    return ManufacturerGroupResponse(
+        id=group.id,
+        code=group.code,
+        name=group.name,
+        create_time=group.create_time,
+        update_time=group.update_time,
+        manufacturers=manufacturers
+    )

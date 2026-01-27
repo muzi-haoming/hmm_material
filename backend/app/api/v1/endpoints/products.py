@@ -8,11 +8,8 @@ from sqlalchemy import select, func
 
 from app.api.deps import get_db, get_current_active_user
 from app.models.user import User
-from app.models.product import Product, ManufacturerProduct, ProductCategory
-from app.schemas.product import (
-    ProductCreate, ProductUpdate, ProductResponse,
-    ManufacturerProductCreate, ManufacturerProductResponse
-)
+from app.models.product import Product
+from app.schemas.product import ProductCreate, ProductUpdate, ProductResponse
 from app.schemas.common import PaginatedResponse
 
 router = APIRouter()
@@ -48,7 +45,6 @@ async def list_products(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
     keyword: Optional[str] = Query(None, description="搜索关键词"),
-    category: Optional[ProductCategory] = Query(None, description="产品分类"),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
 ):
@@ -60,8 +56,6 @@ async def list_products(
             Product.name.ilike(f"%{keyword}%") |
             Product.code.ilike(f"%{keyword}%")
         )
-    if category:
-        query = query.where(Product.category == category)
 
     # 查询总数
     count_query = select(func.count()).select_from(query.subquery())
@@ -156,37 +150,3 @@ async def delete_product(
     await db.commit()
 
     return {"message": "产品已删除"}
-
-
-# ==================== 厂家产品关联 ====================
-
-@router.post("/manufacturer-products", status_code=status.HTTP_201_CREATED)
-async def create_manufacturer_product(
-    mp_in: ManufacturerProductCreate,
-    db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_active_user)
-):
-    """创建厂家-产品关联"""
-    mp = ManufacturerProduct(**mp_in.model_dump())
-    db.add(mp)
-    await db.commit()
-    await db.refresh(mp)
-
-    return {"message": "关联创建成功", "id": mp.id}
-
-
-@router.get("/manufacturer/{manufacturer_id}/products")
-async def get_manufacturer_products(
-    manufacturer_id: int,
-    db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_active_user)
-):
-    """获取厂家可供应的产品列表"""
-    result = await db.execute(
-        select(ManufacturerProduct)
-        .where(ManufacturerProduct.manufacturer_id == manufacturer_id)
-        .where(ManufacturerProduct.is_available == True)
-    )
-    products = result.scalars().all()
-
-    return {"items": products}

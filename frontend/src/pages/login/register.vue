@@ -20,37 +20,11 @@
 
       <view class="input-group">
         <view class="input-wrapper">
-          <u-icon name="email-fill" color="#909399" size="22"></u-icon>
-          <input
-            class="input-field"
-            v-model="formData.email"
-            type="text"
-            placeholder="请输入邮箱"
-            placeholder-class="placeholder-style"
-          />
-        </view>
-      </view>
-
-      <view class="input-group">
-        <view class="input-wrapper">
           <u-icon name="account" color="#909399" size="22"></u-icon>
           <input
             class="input-field"
-            v-model="formData.full_name"
+            v-model="formData.name"
             placeholder="请输入姓名"
-            placeholder-class="placeholder-style"
-          />
-        </view>
-      </view>
-
-      <view class="input-group">
-        <view class="input-wrapper">
-          <u-icon name="phone-fill" color="#909399" size="22"></u-icon>
-          <input
-            class="input-field"
-            v-model="formData.phone"
-            type="tel"
-            placeholder="请输入手机号（选填）"
             placeholder-class="placeholder-style"
           />
         </view>
@@ -86,8 +60,8 @@
         <picker mode="selector" :range="roleOptions" range-key="label" @change="onRoleChange">
           <view class="picker-wrapper">
             <u-icon name="integral-fill" color="#909399" size="22"></u-icon>
-            <text class="picker-text" :class="{ placeholder: !formData.role }">
-              {{ formData.role ? getRoleText(formData.role) : '请选择角色' }}
+            <text class="picker-text" :class="{ placeholder: !formData.role_id }">
+              {{ selectedRoleLabel || '请选择角色' }}
             </text>
             <u-icon name="arrow-down" color="#909399" size="18"></u-icon>
           </view>
@@ -111,42 +85,32 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { register } from '@/api'
 
 const formData = reactive({
   username: '',
-  email: '',
-  full_name: '',
-  phone: '',
+  name: '',
   password: '',
   confirmPassword: '',
-  role: ''
+  role_id: null
 })
 
 const loading = ref(false)
 
+// 角色选项 - 对应 user_role 表中的数据
 const roleOptions = [
-  { label: '工地员工', value: 'SITE_STAFF' },
-  { label: '工地管理员', value: 'SITE_MANAGER' },
-  { label: '厂家代理人', value: 'AGENT' },
-  { label: '厂家员工', value: 'MANUFACTURER' }
+  { label: '用户', value: 2 }  // role_id = 2 是普通用户
 ]
 
-const getRoleText = (role) => {
-  const roleMap = {
-    ADMIN: '系统管理员',
-    SITE_MANAGER: '工地管理员',
-    SITE_STAFF: '工地员工',
-    AGENT: '厂家代理人',
-    MANUFACTURER: '厂家员工'
-  }
-  return roleMap[role] || '未知角色'
-}
+const selectedRoleLabel = computed(() => {
+  const option = roleOptions.find(opt => opt.value === formData.role_id)
+  return option ? option.label : ''
+})
 
 const onRoleChange = (e) => {
   const index = e.detail.value
-  formData.role = roleOptions[index].value
+  formData.role_id = roleOptions[index].value
 }
 
 const handleRegister = async () => {
@@ -155,11 +119,7 @@ const handleRegister = async () => {
     uni.showToast({ title: '用户名至少3个字符', icon: 'none' })
     return
   }
-  if (!formData.email || !formData.email.includes('@')) {
-    uni.showToast({ title: '请输入有效的邮箱', icon: 'none' })
-    return
-  }
-  if (!formData.full_name) {
+  if (!formData.name) {
     uni.showToast({ title: '请输入姓名', icon: 'none' })
     return
   }
@@ -171,7 +131,7 @@ const handleRegister = async () => {
     uni.showToast({ title: '两次密码输入不一致', icon: 'none' })
     return
   }
-  if (!formData.role) {
+  if (!formData.role_id) {
     uni.showToast({ title: '请选择角色', icon: 'none' })
     return
   }
@@ -181,11 +141,9 @@ const handleRegister = async () => {
   try {
     await register({
       username: formData.username,
-      email: formData.email,
-      full_name: formData.full_name,
-      phone: formData.phone || null,
+      name: formData.name,
       password: formData.password,
-      role: formData.role
+      role_id: formData.role_id
     })
     uni.showToast({ title: '注册成功', icon: 'success' })
     setTimeout(() => {

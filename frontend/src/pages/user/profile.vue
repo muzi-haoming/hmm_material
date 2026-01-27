@@ -6,7 +6,7 @@
         <u-avatar :text="userStore.userName?.charAt(0) || 'U'" size="120rpx" />
         <view class="user-info">
           <text class="name">{{ userStore.userName || '未登录' }}</text>
-          <text class="role">{{ getRoleText(userStore.userRole) }}</text>
+          <text class="role">{{ userStore.userRoleName }}</text>
         </view>
       </view>
     </view>
@@ -29,12 +29,6 @@
         <view class="menu-item" @click="navigateTo('/pages/contract/list')">
           <u-icon name="file-text" size="40rpx" color="#1890ff" />
           <text class="menu-text">合同管理</text>
-          <u-icon name="arrow-right" size="28rpx" color="#999" />
-        </view>
-
-        <view class="menu-item" @click="navigateTo('/pages/delegation/list')">
-          <u-icon name="share" size="40rpx" color="#722ed1" />
-          <text class="menu-text">委托函管理</text>
           <u-icon name="arrow-right" size="28rpx" color="#999" />
         </view>
       </view>
@@ -67,17 +61,6 @@
 import { useUserStore } from '@/store/user'
 
 const userStore = useUserStore()
-
-const getRoleText = (role) => {
-  const roleMap = {
-    ADMIN: '系统管理员',
-    SITE_MANAGER: '工地管理员',
-    SITE_STAFF: '工地员工',
-    AGENT: '厂家代理人',
-    MANUFACTURER: '厂家员工'
-  }
-  return roleMap[role] || '未知角色'
-}
 
 const navigateTo = (url) => {
   uni.navigateTo({ url })

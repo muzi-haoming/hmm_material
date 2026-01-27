@@ -1,24 +1,39 @@
 """
 数据库模型
 """
-from .user import User
+from .user import User, UserRole
 from .site import Site
-from .manufacturer import Manufacturer, ManufacturerGroup
-from .contract import Contract, ContractManufacturer
-from .product import Product, ManufacturerProduct
-from .order import Order, OrderItem
-from .delegation import Delegation
+from .manufacturer import Manufacturer, ManufacturerGroup, ManufacturerGroupDetail
+from .contract import Contract
+from .product import Product
+from .order import Order
+from .stock import Stock
+from .stock_out import StockOut
+from .stock_in import StockIn
+from .purchase import Purchase
+from .statement import (
+    Statement,
+    StatementMaterialDetail,
+    StatementOtherExpensesItem,
+    StatementOtherExpensesDetail,
+)
 
 __all__ = [
     "User",
+    "UserRole",
     "Site",
     "Manufacturer",
     "ManufacturerGroup",
+    "ManufacturerGroupDetail",
     "Contract",
-    "ContractManufacturer",
     "Product",
-    "ManufacturerProduct",
     "Order",
-    "OrderItem",
-    "Delegation",
+    "Stock",
+    "StockOut",
+    "StockIn",
+    "Purchase",
+    "Statement",
+    "StatementMaterialDetail",
+    "StatementOtherExpensesItem",
+    "StatementOtherExpensesDetail",
 ]

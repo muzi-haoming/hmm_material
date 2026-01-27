@@ -31,10 +31,10 @@ async def update_current_user(
     """更新当前用户信息"""
     update_data = user_in.model_dump(exclude_unset=True)
 
-    # 普通用户不能修改角色和活跃状态
-    if not current_user.is_superuser:
-        update_data.pop("role", None)
-        update_data.pop("is_active", None)
+    # 普通用户不能修改角色
+    is_admin = current_user.role and current_user.role.code == 'admin'
+    if not is_admin:
+        update_data.pop("role_id", None)
 
     for field, value in update_data.items():
         setattr(current_user, field, value)

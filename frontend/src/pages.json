@@ -73,18 +73,6 @@
       }
     },
     {
-      "path": "pages/delegation/list",
-      "style": {
-        "navigationBarTitleText": "委托函管理"
-      }
-    },
-    {
-      "path": "pages/delegation/detail",
-      "style": {
-        "navigationBarTitleText": "委托函详情"
-      }
-    },
-    {
       "path": "pages/user/profile",
       "style": {
         "navigationBarTitleText": "个人中心"

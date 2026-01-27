@@ -1,63 +1,45 @@
 """
-用户模型
+用户相关模型
 """
-from enum import Enum
-from typing import Optional, List, TYPE_CHECKING
-from sqlalchemy import String, Boolean, Enum as SQLEnum
+from typing import TYPE_CHECKING
+from sqlalchemy import String, Integer, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
 from .base import TimestampMixin
 
 if TYPE_CHECKING:
-    from .site import Site
-    from .manufacturer import Manufacturer
+    from .contract import Contract
 
 
-class UserRole(str, Enum):
-    """用户角色枚举"""
-    ADMIN = "ADMIN"              # 系统管理员
-    SITE_MANAGER = "SITE_MANAGER"  # 工地管理员
-    SITE_STAFF = "SITE_STAFF"    # 工地员工
-    AGENT = "AGENT"              # 厂家代理人
-    MANUFACTURER = "MANUFACTURER"  # 厂家员工
+class UserRole(Base):
+    """用户角色模型"""
+    __tablename__ = "user_role"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    code: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(String(200), nullable=False)
+
+    # 关系
+    users: Mapped[list["User"]] = relationship("User", back_populates="role")
+
+    def __repr__(self) -> str:
+        return f"<UserRole(id={self.id}, code={self.code}, name={self.name})>"
 
 
 class User(Base, TimestampMixin):
     """用户模型"""
-    __tablename__ = "users"
+    __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    username: Mapped[str] = mapped_column(String(50), unique=True, index=True)
-    email: Mapped[str] = mapped_column(String(100), unique=True, index=True)
-    hashed_password: Mapped[str] = mapped_column(String(255))
-    full_name: Mapped[str] = mapped_column(String(100))
-    phone: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
-    role: Mapped[UserRole] = mapped_column(
-        SQLEnum(UserRole),
-        default=UserRole.SITE_STAFF
-    )
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    is_superuser: Mapped[bool] = mapped_column(Boolean, default=False)
-
-    # 关联的工地（如果是工地角色）
-    site_id: Mapped[Optional[int]] = mapped_column(nullable=True)
-
-    # 关联的厂家（如果是厂家/代理人角色）
-    manufacturer_id: Mapped[Optional[int]] = mapped_column(nullable=True)
+    name: Mapped[str] = mapped_column(String(200), nullable=False)
+    username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+    password: Mapped[str] = mapped_column(String(32), nullable=False)  # MD5 32位
+    role_id: Mapped[int] = mapped_column(Integer, ForeignKey("user_role.id"), nullable=False)
 
     # 关系
-    managed_sites: Mapped[List["Site"]] = relationship(
-        "Site",
-        back_populates="manager",
-        foreign_keys="Site.manager_id"
-    )
-
-    managed_manufacturers: Mapped[List["Manufacturer"]] = relationship(
-        "Manufacturer",
-        back_populates="agent",
-        foreign_keys="Manufacturer.agent_id"
-    )
+    role: Mapped["UserRole"] = relationship("UserRole", back_populates="users")
+    contracts: Mapped[list["Contract"]] = relationship("Contract", back_populates="agent")
 
     def __repr__(self) -> str:
-        return f"<User(id={self.id}, username={self.username}, role={self.role})>"
+        return f"<User(id={self.id}, username={self.username}, name={self.name})>"

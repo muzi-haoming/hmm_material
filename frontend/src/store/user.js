@@ -12,9 +12,10 @@ export const useUserStore = defineStore('user', {
   }),
 
   getters: {
-    isAdmin: (state) => state.user?.is_superuser || false,
-    userRole: (state) => state.user?.role || '',
-    userName: (state) => state.user?.full_name || state.user?.username || ''
+    isAdmin: (state) => state.user?.role?.code === 'admin',
+    userRole: (state) => state.user?.role?.code || '',
+    userRoleName: (state) => state.user?.role?.name || '未知角色',
+    userName: (state) => state.user?.name || state.user?.username || ''
   },
 
   actions: {

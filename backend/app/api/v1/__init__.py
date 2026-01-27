@@ -2,7 +2,7 @@
 API V1 模块
 """
 from fastapi import APIRouter
-from .endpoints import auth, users, sites, manufacturers, contracts, products, orders, delegations
+from .endpoints import auth, users, sites, manufacturers, contracts, products, orders
 
 api_router = APIRouter()
 
@@ -13,4 +13,3 @@ api_router.include_router(manufacturers.router, prefix="/manufacturers", tags=["
 api_router.include_router(contracts.router, prefix="/contracts", tags=["合同管理"])
 api_router.include_router(products.router, prefix="/products", tags=["产品管理"])
 api_router.include_router(orders.router, prefix="/orders", tags=["订单管理"])
-api_router.include_router(delegations.router, prefix="/delegations", tags=["委托函管理"])

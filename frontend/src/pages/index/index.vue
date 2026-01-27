@@ -8,7 +8,7 @@
         </view>
         <view class="user-text">
           <text class="name">{{ userStore.userName || '未登录' }}</text>
-          <text class="role">{{ getRoleText(userStore.userRole) }}</text>
+          <text class="role">{{ userStore.userRoleName }}</text>
         </view>
       </view>
     </view>
@@ -27,10 +27,6 @@
         <view class="stat-item" @click="navigateTo('/pages/contract/list')">
           <text class="stat-value">{{ stats.activeContracts }}</text>
           <text class="stat-label">生效合同</text>
-        </view>
-        <view class="stat-item" @click="navigateTo('/pages/delegation/list')">
-          <text class="stat-value">{{ stats.pendingDelegations }}</text>
-          <text class="stat-label">待处理委托</text>
         </view>
       </view>
     </view>
@@ -100,8 +96,7 @@ const userStore = useUserStore()
 const stats = ref({
   pendingOrders: 0,
   processingOrders: 0,
-  activeContracts: 0,
-  pendingDelegations: 0
+  activeContracts: 0
 })
 
 const recentOrders = ref([])
@@ -120,17 +115,6 @@ const loadData = async () => {
   } catch (error) {
     console.error('加载数据失败:', error)
   }
-}
-
-const getRoleText = (role) => {
-  const roleMap = {
-    ADMIN: '系统管理员',
-    SITE_MANAGER: '工地管理员',
-    SITE_STAFF: '工地员工',
-    AGENT: '厂家代理人',
-    MANUFACTURER: '厂家员工'
-  }
-  return roleMap[role] || '未知角色'
 }
 
 const getStatusText = (status) => {
@@ -203,7 +187,7 @@ const navigateTo = (url) => {
 
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     padding: 32rpx 0;
 
     .stat-item {

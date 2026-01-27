@@ -6,15 +6,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
-from app.core.database import init_db
 from app.api.v1 import api_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """应用生命周期管理"""
-    # 启动时初始化数据库
-    await init_db()
+    # 数据库表由外部脚本维护，不再自动创建
     yield
     # 关闭时的清理操作（如果需要）
 

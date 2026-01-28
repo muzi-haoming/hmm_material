@@ -44,3 +44,19 @@ export const updateUser = (id, data) => {
 export const deleteUser = (id) => {
   return del(`/users/${id}`)
 }
+
+// ==================== 角色管理 ====================
+
+/**
+ * 获取角色列表
+ */
+export const getRoleList = () => {
+  return get('/auth/roles')
+}
+
+/**
+ * 获取角色详情
+ */
+export const getRole = (id) => {
+  return get(`/roles/${id}`)
+}

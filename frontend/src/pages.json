@@ -7,6 +7,24 @@
       }
     },
     {
+      "path": "pages/business/index",
+      "style": {
+        "navigationBarTitleText": "业务管理"
+      }
+    },
+    {
+      "path": "pages/basic/index",
+      "style": {
+        "navigationBarTitleText": "基础数据"
+      }
+    },
+    {
+      "path": "pages/user/profile",
+      "style": {
+        "navigationBarTitleText": "个人中心"
+      }
+    },
+    {
       "path": "pages/login/login",
       "style": {
         "navigationBarTitleText": "登录"
@@ -16,42 +34,6 @@
       "path": "pages/login/register",
       "style": {
         "navigationBarTitleText": "注册"
-      }
-    },
-    {
-      "path": "pages/site/list",
-      "style": {
-        "navigationBarTitleText": "工地管理"
-      }
-    },
-    {
-      "path": "pages/site/detail",
-      "style": {
-        "navigationBarTitleText": "工地详情"
-      }
-    },
-    {
-      "path": "pages/manufacturer/list",
-      "style": {
-        "navigationBarTitleText": "厂家管理"
-      }
-    },
-    {
-      "path": "pages/manufacturer/detail",
-      "style": {
-        "navigationBarTitleText": "厂家详情"
-      }
-    },
-    {
-      "path": "pages/contract/list",
-      "style": {
-        "navigationBarTitleText": "合同管理"
-      }
-    },
-    {
-      "path": "pages/contract/detail",
-      "style": {
-        "navigationBarTitleText": "合同详情"
       }
     },
     {
@@ -67,15 +49,207 @@
       }
     },
     {
-      "path": "pages/order/create",
+      "path": "pages/order/form",
       "style": {
-        "navigationBarTitleText": "创建订单"
+        "navigationBarTitleText": "订单编辑"
       }
     },
     {
-      "path": "pages/user/profile",
+      "path": "pages/purchase/list",
       "style": {
-        "navigationBarTitleText": "个人中心"
+        "navigationBarTitleText": "采购单管理"
+      }
+    },
+    {
+      "path": "pages/purchase/detail",
+      "style": {
+        "navigationBarTitleText": "采购单详情"
+      }
+    },
+    {
+      "path": "pages/purchase/form",
+      "style": {
+        "navigationBarTitleText": "采购单编辑"
+      }
+    },
+    {
+      "path": "pages/statement/list",
+      "style": {
+        "navigationBarTitleText": "对账单管理"
+      }
+    },
+    {
+      "path": "pages/statement/detail",
+      "style": {
+        "navigationBarTitleText": "对账单详情"
+      }
+    },
+    {
+      "path": "pages/statement/form",
+      "style": {
+        "navigationBarTitleText": "对账单编辑"
+      }
+    },
+    {
+      "path": "pages/stock/list",
+      "style": {
+        "navigationBarTitleText": "库存管理"
+      }
+    },
+    {
+      "path": "pages/stock/detail",
+      "style": {
+        "navigationBarTitleText": "库存详情"
+      }
+    },
+    {
+      "path": "pages/stock-in/list",
+      "style": {
+        "navigationBarTitleText": "入库管理"
+      }
+    },
+    {
+      "path": "pages/stock-in/detail",
+      "style": {
+        "navigationBarTitleText": "入库详情"
+      }
+    },
+    {
+      "path": "pages/stock-in/form",
+      "style": {
+        "navigationBarTitleText": "入库编辑"
+      }
+    },
+    {
+      "path": "pages/stock-out/list",
+      "style": {
+        "navigationBarTitleText": "出库管理"
+      }
+    },
+    {
+      "path": "pages/stock-out/detail",
+      "style": {
+        "navigationBarTitleText": "出库详情"
+      }
+    },
+    {
+      "path": "pages/stock-out/form",
+      "style": {
+        "navigationBarTitleText": "出库编辑"
+      }
+    },
+    {
+      "path": "pages/contract/list",
+      "style": {
+        "navigationBarTitleText": "合同管理"
+      }
+    },
+    {
+      "path": "pages/contract/detail",
+      "style": {
+        "navigationBarTitleText": "合同详情"
+      }
+    },
+    {
+      "path": "pages/contract/form",
+      "style": {
+        "navigationBarTitleText": "合同编辑"
+      }
+    },
+    {
+      "path": "pages/site/list",
+      "style": {
+        "navigationBarTitleText": "工地管理"
+      }
+    },
+    {
+      "path": "pages/site/detail",
+      "style": {
+        "navigationBarTitleText": "工地详情"
+      }
+    },
+    {
+      "path": "pages/site/form",
+      "style": {
+        "navigationBarTitleText": "工地编辑"
+      }
+    },
+    {
+      "path": "pages/manufacturer/list",
+      "style": {
+        "navigationBarTitleText": "厂家管理"
+      }
+    },
+    {
+      "path": "pages/manufacturer/detail",
+      "style": {
+        "navigationBarTitleText": "厂家详情"
+      }
+    },
+    {
+      "path": "pages/manufacturer/form",
+      "style": {
+        "navigationBarTitleText": "厂家编辑"
+      }
+    },
+    {
+      "path": "pages/manufacturer-group/list",
+      "style": {
+        "navigationBarTitleText": "厂家组管理"
+      }
+    },
+    {
+      "path": "pages/manufacturer-group/detail",
+      "style": {
+        "navigationBarTitleText": "厂家组详情"
+      }
+    },
+    {
+      "path": "pages/manufacturer-group/form",
+      "style": {
+        "navigationBarTitleText": "厂家组编辑"
+      }
+    },
+    {
+      "path": "pages/product/list",
+      "style": {
+        "navigationBarTitleText": "产品管理"
+      }
+    },
+    {
+      "path": "pages/product/detail",
+      "style": {
+        "navigationBarTitleText": "产品详情"
+      }
+    },
+    {
+      "path": "pages/product/form",
+      "style": {
+        "navigationBarTitleText": "产品编辑"
+      }
+    },
+    {
+      "path": "pages/users/list",
+      "style": {
+        "navigationBarTitleText": "用户管理"
+      }
+    },
+    {
+      "path": "pages/users/detail",
+      "style": {
+        "navigationBarTitleText": "用户详情"
+      }
+    },
+    {
+      "path": "pages/role/list",
+      "style": {
+        "navigationBarTitleText": "角色管理"
+      }
+    },
+    {
+      "path": "pages/role/detail",
+      "style": {
+        "navigationBarTitleText": "角色详情"
       }
     }
   ],
@@ -98,10 +272,16 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/order/list",
+        "pagePath": "pages/business/index",
         "iconPath": "static/icons/order.png",
         "selectedIconPath": "static/icons/order-active.png",
-        "text": "订单"
+        "text": "业务"
+      },
+      {
+        "pagePath": "pages/basic/index",
+        "iconPath": "static/icons/data.png",
+        "selectedIconPath": "static/icons/data-active.png",
+        "text": "基础"
       },
       {
         "pagePath": "pages/user/profile",

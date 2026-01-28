@@ -1,69 +1,67 @@
 <template>
-  <view class="profile-page">
+  <view class="page">
+    <!-- 紫色渐变头部 -->
+    <view class="header">
+      <view class="status-bar"></view>
+      <view class="header-content">
+        <text class="header-title">HK 综合管理系统</text>
+      </view>
+    </view>
+
     <!-- 用户信息卡片 -->
     <view class="user-card">
-      <view class="avatar-section">
-        <u-avatar :text="userStore.userName?.charAt(0) || 'U'" size="120rpx" />
-        <view class="user-info">
-          <text class="name">{{ userStore.userName || '未登录' }}</text>
-          <text class="role">{{ userStore.userRoleName }}</text>
+      <view class="avatar">
+        <view class="avatar-circle">
+          <u-icon name="account-fill" size="60rpx" color="#999" />
         </view>
+      </view>
+      <view class="user-info">
+        <text class="user-name">{{ userStore.userName || '未登录' }}</text>
+        <text class="user-role">{{ userStore.userRoleName || '用户' }}</text>
       </view>
     </view>
 
     <!-- 菜单列表 -->
-    <view class="menu-section">
-      <view class="menu-group">
-        <view class="menu-item" @click="navigateTo('/pages/site/list')">
-          <u-icon name="home" size="40rpx" color="#52c41a" />
-          <text class="menu-text">工地管理</text>
-          <u-icon name="arrow-right" size="28rpx" color="#999" />
-        </view>
-
-        <view class="menu-item" @click="navigateTo('/pages/manufacturer/list')">
-          <u-icon name="grid" size="40rpx" color="#fa8c16" />
-          <text class="menu-text">厂家管理</text>
-          <u-icon name="arrow-right" size="28rpx" color="#999" />
-        </view>
-
-        <view class="menu-item" @click="navigateTo('/pages/contract/list')">
-          <u-icon name="file-text" size="40rpx" color="#1890ff" />
-          <text class="menu-text">合同管理</text>
-          <u-icon name="arrow-right" size="28rpx" color="#999" />
-        </view>
+    <view class="menu-list">
+      <view v-if="isAdmin" class="menu-item" @click="navigateTo('/pages/users/list')">
+        <text class="menu-text">用户管理</text>
+        <u-icon name="arrow-right" size="28rpx" color="#ccc" />
       </view>
 
-      <view class="menu-group">
-        <view class="menu-item">
-          <u-icon name="setting" size="40rpx" color="#666" />
-          <text class="menu-text">设置</text>
-          <u-icon name="arrow-right" size="28rpx" color="#999" />
-        </view>
-
-        <view class="menu-item">
-          <u-icon name="info-circle" size="40rpx" color="#666" />
-          <text class="menu-text">关于</text>
-          <u-icon name="arrow-right" size="28rpx" color="#999" />
-        </view>
+      <view v-if="isAdmin" class="menu-item" @click="navigateTo('/pages/role/list')">
+        <text class="menu-text">用户角色管理</text>
+        <u-icon name="arrow-right" size="28rpx" color="#ccc" />
       </view>
-    </view>
 
-    <!-- 退出登录 -->
-    <view class="logout-section">
-      <u-button type="error" :plain="true" @click="handleLogout">
-        退出登录
-      </u-button>
+      <view class="menu-item" @click="handleResetPassword">
+        <text class="menu-text">重置密码</text>
+        <u-icon name="arrow-right" size="28rpx" color="#ccc" />
+      </view>
+
+      <view class="menu-item" @click="handleLogout">
+        <text class="menu-text">退出登陆</text>
+        <u-icon name="arrow-right" size="28rpx" color="#ccc" />
+      </view>
     </view>
   </view>
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import { useUserStore } from '@/store/user'
 
 const userStore = useUserStore()
 
+const isAdmin = computed(() => {
+  return userStore.userRole?.code === 'admin'
+})
+
 const navigateTo = (url) => {
   uni.navigateTo({ url })
+}
+
+const handleResetPassword = () => {
+  uni.showToast({ title: '功能开发中', icon: 'none' })
 }
 
 const handleLogout = () => {
@@ -80,69 +78,99 @@ const handleLogout = () => {
 </script>
 
 <style lang="scss" scoped>
-.profile-page {
+.page {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: #fff;
+  padding-bottom: 120rpx;
+}
+
+.header {
+  background: linear-gradient(180deg, #BA55D3 0%, #9932CC 100%);
+  padding-bottom: 40rpx;
+
+  .status-bar {
+    height: var(--status-bar-height, 44px);
+  }
+
+  .header-content {
+    padding: 20rpx 32rpx;
+  }
+
+  .header-title {
+    font-size: 36rpx;
+    font-weight: bold;
+    color: #fff;
+  }
 }
 
 .user-card {
-  background: linear-gradient(135deg, #007AFF 0%, #0056b3 100%);
-  padding: 60rpx 32rpx;
+  display: flex;
+  align-items: center;
+  margin: 24rpx 32rpx;
+  padding: 32rpx;
+  background-color: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
 
-  .avatar-section {
-    display: flex;
-    align-items: center;
+  .avatar {
+    margin-right: 24rpx;
 
-    .user-info {
-      margin-left: 24rpx;
+    .avatar-circle {
+      width: 100rpx;
+      height: 100rpx;
+      border-radius: 50%;
+      background-color: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 
-      .name {
-        display: block;
-        font-size: 36rpx;
-        font-weight: bold;
-        color: #fff;
-      }
+  .user-info {
+    flex: 1;
 
-      .role {
-        display: block;
-        font-size: 26rpx;
-        color: rgba(255, 255, 255, 0.8);
-        margin-top: 8rpx;
-      }
+    .user-name {
+      display: block;
+      font-size: 36rpx;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .user-role {
+      display: block;
+      font-size: 26rpx;
+      color: #999;
+      margin-top: 8rpx;
     }
   }
 }
 
-.menu-section {
-  padding: 24rpx;
-}
-
-.menu-group {
+.menu-list {
+  margin: 0 32rpx;
   background-color: #fff;
   border-radius: 16rpx;
-  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
   overflow: hidden;
-}
 
-.menu-item {
-  display: flex;
-  align-items: center;
-  padding: 32rpx 24rpx;
-  border-bottom: 1rpx solid #f0f0f0;
+  .menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32rpx 24rpx;
+    border-bottom: 1rpx solid #f5f5f5;
 
-  &:last-child {
-    border-bottom: none;
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:active {
+      background-color: #f9f9f9;
+    }
+
+    .menu-text {
+      font-size: 30rpx;
+      color: #333;
+    }
   }
-
-  .menu-text {
-    flex: 1;
-    margin-left: 24rpx;
-    font-size: 30rpx;
-    color: #333;
-  }
-}
-
-.logout-section {
-  padding: 48rpx 24rpx;
 }
 </style>

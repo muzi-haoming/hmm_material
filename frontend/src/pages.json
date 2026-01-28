@@ -3,25 +3,22 @@
     {
       "path": "pages/index/index",
       "style": {
+        "navigationStyle": "custom",
         "navigationBarTitleText": "首页"
       }
     },
     {
-      "path": "pages/business/index",
+      "path": "pages/function/index",
       "style": {
-        "navigationBarTitleText": "业务管理"
-      }
-    },
-    {
-      "path": "pages/basic/index",
-      "style": {
-        "navigationBarTitleText": "基础数据"
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "功能"
       }
     },
     {
       "path": "pages/user/profile",
       "style": {
-        "navigationBarTitleText": "个人中心"
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "我的"
       }
     },
     {
@@ -39,7 +36,7 @@
     {
       "path": "pages/order/list",
       "style": {
-        "navigationBarTitleText": "订单管理"
+        "navigationBarTitleText": "工地订单"
       }
     },
     {
@@ -57,7 +54,7 @@
     {
       "path": "pages/purchase/list",
       "style": {
-        "navigationBarTitleText": "采购单管理"
+        "navigationBarTitleText": "采购单"
       }
     },
     {
@@ -75,7 +72,7 @@
     {
       "path": "pages/statement/list",
       "style": {
-        "navigationBarTitleText": "对账单管理"
+        "navigationBarTitleText": "对账单"
       }
     },
     {
@@ -93,7 +90,7 @@
     {
       "path": "pages/stock/list",
       "style": {
-        "navigationBarTitleText": "库存管理"
+        "navigationBarTitleText": "库存信息"
       }
     },
     {
@@ -105,7 +102,7 @@
     {
       "path": "pages/stock-in/list",
       "style": {
-        "navigationBarTitleText": "入库管理"
+        "navigationBarTitleText": "入库单"
       }
     },
     {
@@ -123,7 +120,7 @@
     {
       "path": "pages/stock-out/list",
       "style": {
-        "navigationBarTitleText": "出库管理"
+        "navigationBarTitleText": "出库单"
       }
     },
     {
@@ -139,27 +136,9 @@
       }
     },
     {
-      "path": "pages/contract/list",
-      "style": {
-        "navigationBarTitleText": "合同管理"
-      }
-    },
-    {
-      "path": "pages/contract/detail",
-      "style": {
-        "navigationBarTitleText": "合同详情"
-      }
-    },
-    {
-      "path": "pages/contract/form",
-      "style": {
-        "navigationBarTitleText": "合同编辑"
-      }
-    },
-    {
       "path": "pages/site/list",
       "style": {
-        "navigationBarTitleText": "工地管理"
+        "navigationBarTitleText": "工地信息"
       }
     },
     {
@@ -177,7 +156,7 @@
     {
       "path": "pages/manufacturer/list",
       "style": {
-        "navigationBarTitleText": "厂家管理"
+        "navigationBarTitleText": "厂家信息"
       }
     },
     {
@@ -195,7 +174,7 @@
     {
       "path": "pages/manufacturer-group/list",
       "style": {
-        "navigationBarTitleText": "厂家组管理"
+        "navigationBarTitleText": "厂家组"
       }
     },
     {
@@ -213,7 +192,7 @@
     {
       "path": "pages/product/list",
       "style": {
-        "navigationBarTitleText": "产品管理"
+        "navigationBarTitleText": "产品信息"
       }
     },
     {
@@ -243,7 +222,7 @@
     {
       "path": "pages/role/list",
       "style": {
-        "navigationBarTitleText": "角色管理"
+        "navigationBarTitleText": "用户角色管理"
       }
     },
     {
@@ -254,14 +233,14 @@
     }
   ],
   "globalStyle": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "HMM物料管理",
-    "navigationBarBackgroundColor": "#FFFFFF",
-    "backgroundColor": "#F8F8F8"
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "HK综合管理系统",
+    "navigationBarBackgroundColor": "#BA55D3",
+    "backgroundColor": "#F5F5F5"
   },
   "tabBar": {
     "color": "#999999",
-    "selectedColor": "#007AFF",
+    "selectedColor": "#BA55D3",
     "borderStyle": "black",
     "backgroundColor": "#FFFFFF",
     "list": [
@@ -272,16 +251,10 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/business/index",
-        "iconPath": "static/icons/order.png",
-        "selectedIconPath": "static/icons/order-active.png",
-        "text": "业务"
-      },
-      {
-        "pagePath": "pages/basic/index",
-        "iconPath": "static/icons/data.png",
-        "selectedIconPath": "static/icons/data-active.png",
-        "text": "基础"
+        "pagePath": "pages/function/index",
+        "iconPath": "static/icons/grid.png",
+        "selectedIconPath": "static/icons/grid-active.png",
+        "text": "功能"
       },
       {
         "pagePath": "pages/user/profile",

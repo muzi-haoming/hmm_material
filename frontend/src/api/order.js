@@ -1,7 +1,7 @@
 /**
  * 订单相关 API
  */
-import { get, post, put } from '@/utils/request'
+import { get, post, put, del } from '@/utils/request'
 
 /**
  * 获取订单列表
@@ -57,4 +57,11 @@ export const completeOrder = (id) => {
  */
 export const cancelOrder = (id) => {
   return post(`/orders/${id}/cancel`)
+}
+
+/**
+ * 删除订单
+ */
+export const deleteOrder = (id) => {
+  return del(`/orders/${id}`)
 }

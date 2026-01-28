@@ -219,7 +219,7 @@ const goDetail = (id) => {
 }
 
 const goCreate = () => {
-  uni.navigateTo({ url: '/pages/order/create' })
+  uni.navigateTo({ url: '/pages/order/form' })
 }
 
 const confirmOrder = async (id) => {

@@ -30,7 +30,8 @@
     </view>
 
     <view class="action-bar">
-      <u-button type="error" @click="handleDelete">删除用户</u-button>
+      <u-button type="primary" @click="goEdit">编辑</u-button>
+      <u-button type="error" @click="handleDelete">删除</u-button>
     </view>
   </view>
 </template>
@@ -59,6 +60,8 @@ const formatDate = (dateStr) => {
   const date = new Date(dateStr)
   return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`
 }
+
+const goEdit = () => uni.navigateTo({ url: `/pages/users/form?id=${id.value}` })
 
 const handleDelete = () => {
   uni.showModal({

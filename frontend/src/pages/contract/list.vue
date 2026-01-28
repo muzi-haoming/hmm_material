@@ -21,6 +21,10 @@
         <u-loadmore :status="loadStatus" />
       </view>
     </scroll-view>
+
+    <view class="fab-btn" @click="goCreate">
+      <u-icon name="plus" color="#fff" size="48rpx" />
+    </view>
   </view>
 </template>
 
@@ -59,6 +63,7 @@ const loadMore = () => { if (loadStatus.value !== 'loadmore') return; page.value
 const onRefresh = async () => { isRefreshing.value = true; await loadData(true); isRefreshing.value = false }
 const handleSearch = () => { loadData(true) }
 const goDetail = (id) => { uni.navigateTo({ url: `/pages/contract/detail?id=${id}` }) }
+const goCreate = () => { uni.navigateTo({ url: '/pages/contract/form' }) }
 </script>
 
 <style lang="scss" scoped>
@@ -73,4 +78,5 @@ const goDetail = (id) => { uni.navigateTo({ url: `/pages/contract/detail?id=${id
 .contract-no { font-size: 26rpx; color: #666; }
 .amount { font-size: 28rpx; font-weight: bold; color: #f5222d; }
 .date-range { font-size: 24rpx; color: #999; }
+.fab-btn { position: fixed; right: 32rpx; bottom: 140rpx; width: 96rpx; height: 96rpx; background: linear-gradient(135deg, #BA55D3 0%, #9932CC 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8rpx 24rpx rgba(186, 85, 211, 0.4); }
 </style>

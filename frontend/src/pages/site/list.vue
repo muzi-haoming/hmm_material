@@ -44,6 +44,10 @@
         <u-loadmore :status="loadStatus" />
       </view>
     </scroll-view>
+
+    <view class="fab-btn" @click="goCreate">
+      <u-icon name="plus" color="#fff" size="48rpx" />
+    </view>
   </view>
 </template>
 
@@ -107,6 +111,10 @@ const handleSearch = () => {
 const goDetail = (id) => {
   uni.navigateTo({ url: `/pages/site/detail?id=${id}` })
 }
+
+const goCreate = () => {
+  uni.navigateTo({ url: '/pages/site/form' })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -168,5 +176,19 @@ const goDetail = (id) => {
       }
     }
   }
+}
+
+.fab-btn {
+  position: fixed;
+  right: 32rpx;
+  bottom: 140rpx;
+  width: 96rpx;
+  height: 96rpx;
+  background: linear-gradient(135deg, #BA55D3 0%, #9932CC 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(186, 85, 211, 0.4);
 }
 </style>

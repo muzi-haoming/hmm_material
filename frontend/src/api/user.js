@@ -60,3 +60,31 @@ export const getRoleList = () => {
 export const getRole = (id) => {
   return get(`/roles/${id}`)
 }
+
+/**
+ * 创建角色
+ */
+export const createRole = (data) => {
+  return post('/roles', data)
+}
+
+/**
+ * 更新角色
+ */
+export const updateRole = (id, data) => {
+  return put(`/roles/${id}`, data)
+}
+
+/**
+ * 删除角色
+ */
+export const deleteRole = (id) => {
+  return del(`/roles/${id}`)
+}
+
+/**
+ * 创建用户（管理员）
+ */
+export const createUser = (data) => {
+  return post('/users', data)
+}

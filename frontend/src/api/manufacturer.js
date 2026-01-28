@@ -58,3 +58,17 @@ export const getManufacturerGroup = (id) => {
 export const createManufacturerGroup = (data) => {
   return post('/manufacturers/groups', data)
 }
+
+/**
+ * 更新厂家组
+ */
+export const updateManufacturerGroup = (id, data) => {
+  return put(`/manufacturers/groups/${id}`, data)
+}
+
+/**
+ * 删除厂家组
+ */
+export const deleteManufacturerGroup = (id) => {
+  return del(`/manufacturers/groups/${id}`)
+}

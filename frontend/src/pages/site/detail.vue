@@ -45,31 +45,37 @@
       </view>
     </view>
 
+    <view class="action-bar">
+      <u-button type="primary" @click="goEdit">编辑</u-button>
+      <u-button type="error" @click="handleDelete">删除</u-button>
+    </view>
+
     <u-loading-page :loading="loading" />
   </view>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getSite } from '@/api/site'
+import { getSite, deleteSite } from '@/api/site'
 
 const site = ref(null)
 const loading = ref(true)
+const id = ref('')
 
 onMounted(() => {
   const pages = getCurrentPages()
   const currentPage = pages[pages.length - 1]
-  const id = currentPage?.options?.id
+  id.value = currentPage?.options?.id || ''
 
-  if (id) {
-    loadDetail(id)
+  if (id.value) {
+    loadDetail()
   }
 })
 
-const loadDetail = async (id) => {
+const loadDetail = async () => {
   loading.value = true
   try {
-    site.value = await getSite(id)
+    site.value = await getSite(id.value)
   } catch (error) {
     uni.showToast({ title: '加载失败', icon: 'none' })
   } finally {
@@ -80,6 +86,28 @@ const loadDetail = async (id) => {
 const callPhone = (phone) => {
   uni.makePhoneCall({ phoneNumber: phone })
 }
+
+const goEdit = () => {
+  uni.navigateTo({ url: `/pages/site/form?id=${id.value}` })
+}
+
+const handleDelete = () => {
+  uni.showModal({
+    title: '确认删除',
+    content: '确定要删除该工地吗？',
+    success: async (res) => {
+      if (res.confirm) {
+        try {
+          await deleteSite(id.value)
+          uni.showToast({ title: '删除成功', icon: 'success' })
+          setTimeout(() => uni.navigateBack(), 1500)
+        } catch (error) {
+          uni.showToast({ title: '删除失败', icon: 'none' })
+        }
+      }
+    }
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -87,6 +115,7 @@ const callPhone = (phone) => {
   min-height: 100vh;
   background-color: #f5f5f5;
   padding: 24rpx;
+  padding-bottom: 160rpx;
 }
 
 .card {
@@ -129,5 +158,17 @@ const callPhone = (phone) => {
   font-size: 28rpx;
   color: #666;
   line-height: 1.6;
+}
+
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 24rpx;
+  padding: 24rpx;
+  background-color: #fff;
+  box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.05);
 }
 </style>

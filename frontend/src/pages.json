@@ -220,6 +220,12 @@
       }
     },
     {
+      "path": "pages/users/form",
+      "style": {
+        "navigationBarTitleText": "用户编辑"
+      }
+    },
+    {
       "path": "pages/role/list",
       "style": {
         "navigationBarTitleText": "用户角色管理"
@@ -229,6 +235,30 @@
       "path": "pages/role/detail",
       "style": {
         "navigationBarTitleText": "角色详情"
+      }
+    },
+    {
+      "path": "pages/role/form",
+      "style": {
+        "navigationBarTitleText": "角色编辑"
+      }
+    },
+    {
+      "path": "pages/contract/list",
+      "style": {
+        "navigationBarTitleText": "合同管理"
+      }
+    },
+    {
+      "path": "pages/contract/detail",
+      "style": {
+        "navigationBarTitleText": "合同详情"
+      }
+    },
+    {
+      "path": "pages/contract/form",
+      "style": {
+        "navigationBarTitleText": "合同编辑"
       }
     }
   ],

@@ -19,6 +19,9 @@
       :refresher-triggered="isRefreshing"
     >
       <view class="list-content">
+        <view v-if="sites.length === 0 && loadStatus === 'nomore'" class="empty-tip">
+          暂无信息
+        </view>
         <view
           v-for="site in sites"
           :key="site.id"
@@ -45,8 +48,11 @@
       </view>
     </scroll-view>
 
-    <view class="fab-btn" @click="goCreate">
-      <u-icon name="plus" color="#fff" size="48rpx" />
+    <view class="action-bar">
+      <button class="add-button" @click="goCreate">
+        <u-icon name="plus" color="#fff" size="32rpx" />
+        <text>新增工地</text>
+      </button>
     </view>
   </view>
 </template>
@@ -115,12 +121,16 @@ const goDetail = (id) => {
 const goCreate = () => {
   uni.navigateTo({ url: '/pages/site/form' })
 }
+
 </script>
 
 <style lang="scss" scoped>
 .site-list-page {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: #f5f5f5;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
 }
 
 .search-bar {
@@ -129,11 +139,16 @@ const goCreate = () => {
 }
 
 .list-scroll {
-  height: calc(100vh - 100rpx);
+  flex: 1;
+  height: 0; 
 }
 
 .list-content {
   padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background-color: #fff;
 }
 
 .site-card {
@@ -178,17 +193,42 @@ const goCreate = () => {
   }
 }
 
-.fab-btn {
+.empty-tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  color: #999;
+  font-size: 28rpx;
+}
+
+.action-bar {
   position: fixed;
-  right: 32rpx;
-  bottom: 140rpx;
-  width: 96rpx;
-  height: 96rpx;
-  background: linear-gradient(135deg, #BA55D3 0%, #9932CC 100%);
-  border-radius: 50%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background-color: #fff;
+  border-top: 1rpx solid #eee;
+}
+
+.add-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8rpx 24rpx rgba(186, 85, 211, 0.4);
-}
-</style>
+  width: 100%;
+  height: 80rpx;
+  font-size: 32rpx;
+  color: #fff;
+  background: linear-gradient(135deg, #BA55D3 0%, #9932CC 100%);
+  border-radius: 40rpx;
+  box-shadow: 0 4rpx 12rpx rgba(186, 85, 211, 0.3);
+
+  text {
+    margin-left: 10rpx;
+  }
+}</style>

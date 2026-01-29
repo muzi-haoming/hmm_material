@@ -41,16 +41,19 @@
           </view>
         </view>
 
-        <view v-if="items.length === 0 && loadStatus !== 'loading'" class="empty-state">
-          <u-empty text="暂无产品数据" />
+        <view v-if="items.length === 0 && loadStatus === 'nomore'" class="empty-tip">
+          暂无信息
         </view>
 
         <u-loadmore v-if="items.length > 0" :status="loadStatus" />
       </view>
     </scroll-view>
 
-    <view class="fab-btn" @click="goCreate">
-      <u-icon name="plus" color="#fff" size="48rpx" />
+    <view class="action-bar">
+      <button class="add-button" @click="goCreate">
+        <u-icon name="plus" color="#fff" size="32rpx" />
+        <text>新增产品</text>
+      </button>
     </view>
   </view>
 </template>
@@ -124,8 +127,11 @@ const goCreate = () => {
 
 <style lang="scss" scoped>
 .list-page {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: #f5f5f5;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
 }
 
 .search-bar {
@@ -134,11 +140,16 @@ const goCreate = () => {
 }
 
 .list-scroll {
-  height: calc(100vh - 100rpx);
+  flex: 1;
+  height: 0;
 }
 
 .list-content {
   padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background-color: #fff;
 }
 
 .list-card {
@@ -188,25 +199,43 @@ const goCreate = () => {
   }
 }
 
-.empty-state {
-  padding: 100rpx 0;
+.empty-tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  color: #999;
+  font-size: 28rpx;
 }
 
-.fab-btn {
+.action-bar {
   position: fixed;
-  right: 32rpx;
-  bottom: 140rpx;
-  width: 96rpx;
-  height: 96rpx;
-  background: linear-gradient(135deg, #007AFF 0%, #0056b3 100%);
-  border-radius: 50%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background-color: #fff;
+  border-top: 1rpx solid #eee;
+}
+
+.add-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8rpx 24rpx rgba(0, 122, 255, 0.4);
+  width: 100%;
+  height: 80rpx;
+  font-size: 32rpx;
+  color: #fff;
+  background: linear-gradient(135deg, #BA55D3 0%, #9932CC 100%);
+  border-radius: 40rpx;
+  box-shadow: 0 4rpx 12rpx rgba(186, 85, 211, 0.3);
 
-  &:active {
-    transform: scale(0.95);
+  text {
+    margin-left: 10rpx;
   }
 }
 </style>

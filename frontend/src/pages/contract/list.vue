@@ -18,12 +18,18 @@
             {{ formatDate(item.start_date) }} ~ {{ formatDate(item.end_date) }}
           </view>
         </view>
+        <view v-if="items.length === 0 && loadStatus === 'nomore'" class="empty-tip">
+          暂无信息
+        </view>
         <u-loadmore :status="loadStatus" />
       </view>
     </scroll-view>
 
-    <view class="fab-btn" @click="goCreate">
-      <u-icon name="plus" color="#fff" size="48rpx" />
+    <view class="action-bar">
+      <button class="add-button" @click="goCreate">
+        <u-icon name="plus" color="#fff" size="32rpx" />
+        <text>新增合同</text>
+      </button>
     </view>
   </view>
 </template>
@@ -67,10 +73,25 @@ const goCreate = () => { uni.navigateTo({ url: '/pages/contract/form' }) }
 </script>
 
 <style lang="scss" scoped>
-.list-page { min-height: 100vh; background-color: #f5f5f5; }
+.list-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+}
 .search-bar { padding: 20rpx 24rpx; background-color: #fff; }
-.list-scroll { height: calc(100vh - 100rpx); }
-.list-content { padding: 24rpx; }
+.list-scroll { 
+  flex: 1;
+  height: 0;
+}
+.list-content {
+  padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background-color: #fff;
+}
 .item-card { background-color: #fff; border-radius: 16rpx; padding: 24rpx; margin-bottom: 20rpx; }
 .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12rpx; }
 .item-name { font-size: 30rpx; font-weight: bold; color: #333; flex: 1; }
@@ -78,5 +99,42 @@ const goCreate = () => { uni.navigateTo({ url: '/pages/contract/form' }) }
 .contract-no { font-size: 26rpx; color: #666; }
 .amount { font-size: 28rpx; font-weight: bold; color: #f5222d; }
 .date-range { font-size: 24rpx; color: #999; }
-.fab-btn { position: fixed; right: 32rpx; bottom: 140rpx; width: 96rpx; height: 96rpx; background: linear-gradient(135deg, #BA55D3 0%, #9932CC 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8rpx 24rpx rgba(186, 85, 211, 0.4); }
+.empty-tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  color: #999;
+  font-size: 28rpx;
+}
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background-color: #fff;
+  border-top: 1rpx solid #eee;
+}
+
+.add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 80rpx;
+  font-size: 32rpx;
+  color: #fff;
+  background: linear-gradient(135deg, #BA55D3 0%, #9932CC 100%);
+  border-radius: 40rpx;
+  box-shadow: 0 4rpx 12rpx rgba(186, 85, 211, 0.3);
+
+  text {
+    margin-left: 10rpx;
+  }
+}
 </style>

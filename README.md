@@ -69,25 +69,12 @@ cd hmm_material
 ```bash
 # 进入后端目录
 cd backend
-
-# 创建虚拟环境
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# venv\Scripts\activate   # Windows
-
+```
+```bash
 # 安装依赖
 pip install -r requirements.txt
-
-# 配置环境变量
-cp .env.example .env
-# 编辑 .env 文件，配置数据库连接等
-
-# 创建数据库
-createdb hmm_material
-
-# 运行数据库迁移
-alembic upgrade head
-
+```
+```bash
 # 启动开发服务器
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
@@ -102,10 +89,12 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```bash
 # 进入前端目录
 cd frontend
-
+```
+```bash
 # 安装依赖
 npm install
-
+```
+```bash
 # 启动 H5 开发服务器
 npm run dev:h5
 ```

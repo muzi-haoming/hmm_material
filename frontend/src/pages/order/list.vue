@@ -82,13 +82,19 @@
           </view>
         </view>
 
+        <view v-if="orders.length === 0 && loadStatus === 'nomore'" class="empty-tip">
+          暂无信息
+        </view>
+
         <u-loadmore :status="loadStatus" />
       </view>
     </scroll-view>
 
-    <!-- 新建订单按钮 -->
-    <view class="fab-button" @click="goCreate">
-      <u-icon name="plus" size="48rpx" color="#fff" />
+    <view class="action-bar">
+      <button class="add-button" @click="goCreate">
+        <u-icon name="plus" color="#fff" size="32rpx" />
+        <text>新增订单</text>
+      </button>
     </view>
   </view>
 </template>
@@ -245,8 +251,11 @@ const shipOrder = async (id) => {
 
 <style lang="scss" scoped>
 .order-list-page {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: #f5f5f5;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
 }
 
 .search-bar {
@@ -290,11 +299,16 @@ const shipOrder = async (id) => {
 }
 
 .order-scroll {
-  height: calc(100vh - 200rpx);
+  flex: 1;
+  height: 0;
 }
 
 .order-list {
   padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background-color: #fff;
 }
 
 .order-card {
@@ -358,17 +372,43 @@ const shipOrder = async (id) => {
   }
 }
 
-.fab-button {
+.empty-tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  color: #999;
+  font-size: 28rpx;
+}
+
+.action-bar {
   position: fixed;
-  right: 32rpx;
-  bottom: 180rpx;
-  width: 100rpx;
-  height: 100rpx;
-  background-color: $primary-color;
-  border-radius: 50%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background-color: #fff;
+  border-top: 1rpx solid #eee;
+}
+
+.add-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8rpx 24rpx rgba(0, 122, 255, 0.4);
+  width: 100%;
+  height: 80rpx;
+  font-size: 32rpx;
+  color: #fff;
+  background: linear-gradient(135deg, #BA55D3 0%, #9932CC 100%);
+  border-radius: 40rpx;
+  box-shadow: 0 4rpx 12rpx rgba(186, 85, 211, 0.3);
+
+  text {
+    margin-left: 10rpx;
+  }
 }
 </style>

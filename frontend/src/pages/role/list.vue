@@ -9,14 +9,17 @@
           </view>
         </view>
 
-        <view v-if="items.length === 0 && !isRefreshing" class="empty-state">
-          <u-empty text="暂无角色数据" />
+        <view v-if="items.length === 0 && loadStatus === 'nomore'" class="empty-tip">
+          暂无信息
         </view>
       </view>
     </scroll-view>
 
-    <view class="fab-btn" @click="goCreate">
-      <u-icon name="plus" color="#fff" size="48rpx" />
+    <view class="action-bar">
+      <button class="add-button" @click="goCreate">
+        <u-icon name="plus" color="#fff" size="32rpx" />
+        <text>新增角色</text>
+      </button>
     </view>
   </view>
 </template>
@@ -27,15 +30,19 @@ import { getRoleList } from '@/api/user'
 
 const items = ref([])
 const isRefreshing = ref(false)
+const loadStatus = ref('loadmore')
 
 onMounted(() => loadData())
 
 const loadData = async () => {
+  loadStatus.value = 'loading'
   try {
     const res = await getRoleList()
     items.value = res || []
+    loadStatus.value = 'nomore'
   } catch (error) {
     console.error('加载失败:', error)
+    loadStatus.value = 'loadmore'
   }
 }
 
@@ -50,9 +57,24 @@ const goCreate = () => uni.navigateTo({ url: '/pages/role/form' })
 </script>
 
 <style lang="scss" scoped>
-.list-page { min-height: 100vh; background-color: #f5f5f5; }
-.list-scroll { height: 100vh; }
-.list-content { padding: 24rpx; }
+.list-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+}
+.list-scroll { 
+  flex: 1;
+  height: 0;
+}
+.list-content {
+  padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background-color: #fff;
+}
 .list-card {
   background-color: #fff; border-radius: 16rpx; padding: 24rpx; margin-bottom: 20rpx;
   .card-header { display: flex; justify-content: space-between; align-items: center;
@@ -60,6 +82,42 @@ const goCreate = () => uni.navigateTo({ url: '/pages/role/form' })
     .card-code { font-size: 24rpx; color: #999; background-color: #f5f5f5; padding: 4rpx 12rpx; border-radius: 8rpx; }
   }
 }
-.empty-state { padding: 100rpx 0; }
-.fab-btn { position: fixed; right: 32rpx; bottom: 140rpx; width: 96rpx; height: 96rpx; background: linear-gradient(135deg, #BA55D3 0%, #9932CC 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8rpx 24rpx rgba(186, 85, 211, 0.4); }
+.empty-tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  color: #999;
+  font-size: 28rpx;
+}
+.action-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20rpx 24rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background-color: #fff;
+  border-top: 1rpx solid #eee;
+}
+
+.add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 80rpx;
+  font-size: 32rpx;
+  color: #fff;
+  background: linear-gradient(135deg, #BA55D3 0%, #9932CC 100%);
+  border-radius: 40rpx;
+  box-shadow: 0 4rpx 12rpx rgba(186, 85, 211, 0.3);
+
+  text {
+    margin-left: 10rpx;
+  }
+}
 </style>

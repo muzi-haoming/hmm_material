@@ -43,8 +43,8 @@
           </view>
         </view>
 
-        <view v-if="items.length === 0 && loadStatus !== 'loading'" class="empty-state">
-          <u-empty text="暂无库存数据" />
+        <view v-if="items.length === 0 && loadStatus === 'nomore'" class="empty-tip">
+          暂无信息
         </view>
 
         <u-loadmore v-if="items.length > 0" :status="loadStatus" />
@@ -118,7 +118,9 @@ const goDetail = (id) => {
 
 <style lang="scss" scoped>
 .list-page {
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: #f5f5f5;
 }
 
@@ -128,11 +130,16 @@ const goDetail = (id) => {
 }
 
 .list-scroll {
-  height: calc(100vh - 100rpx);
+  flex: 1;
+  height: 0;
 }
 
 .list-content {
   padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background-color: #fff;
 }
 
 .list-card {
@@ -195,7 +202,12 @@ const goDetail = (id) => {
   }
 }
 
-.empty-state {
-  padding: 100rpx 0;
+.empty-tip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  color: #999;
+  font-size: 28rpx;
 }
 </style>
